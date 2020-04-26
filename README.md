@@ -1,6 +1,6 @@
 # yaMazeImp
 Yet another maze implementation
-Eric Conrad
+-- Eric Conrad
 
 Python3 implementations of maze algorithms.
 
