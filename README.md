@@ -31,5 +31,7 @@ Python3 implementations of maze algorithms.
 Notes:
 
   1. These algorithms are essentially the ones described in *Mazes for Programmers* by Jamis Buck and published in 2015 by the Pragmatic Bookshelf. Please support the author and make yourself by buying your own personal copy of the book.
+   * Jamis Buck has a blog: https://weblog.jamisbuck.org/2015/7/8/mazes-for-programmers.html
+   * Information about the book: https://pragprog.com/book/jbmaze/mazes-for-programmers
   
   2. These algorithms are not described in the Jamis Buck book.
