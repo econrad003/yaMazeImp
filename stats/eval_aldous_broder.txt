@@ -1,0 +1,25 @@
+                Aldous/Broder algorithm (first entrance)                
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    115.300000     16.067486
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      8.675000      1.542351
+          longest vertical run      1.000000      8.475000      1.768492
+        average horizontal run      1.000000      2.898633      0.096730
+          average vertical run      1.000000      2.862686      0.093498
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    174.850000      7.647859
+   Number of cells of degree 2      1.000000    271.775000     13.522038
+   Number of cells of degree 3      1.000000    133.900000      7.431051
+   Number of cells of degree 4      1.000000     19.475000      3.993504
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!

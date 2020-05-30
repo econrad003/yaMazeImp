@@ -1,0 +1,26 @@
+                       Sidewinder algorithm (N/E)                       
+
+Parameters: Rectangular_Grid(20, 30), bias=50%
+Sample size: 20
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000     97.150000      7.761409
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000     30.000000      0.000000
+          longest vertical run      1.000000      9.550000      1.050063
+        average horizontal run      1.000000      3.154982      0.118227
+          average vertical run      1.000000      2.947316      0.097040
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    165.950000      6.863136
+   Number of cells of degree 2      1.000000    285.100000     12.086966
+   Number of cells of degree 3      1.000000    133.950000      6.908995
+   Number of cells of degree 4      1.000000     15.000000      3.783621
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!
+    Top row is a horizontal run.

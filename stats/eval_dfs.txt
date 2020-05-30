@@ -1,0 +1,27 @@
+                         Recursive Backtracker                         
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    318.950000     33.764607
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      9.125000      2.052984
+          longest vertical run      1.000000      8.650000      1.791003
+        average horizontal run      1.000000      2.736160      0.083930
+          average vertical run      1.000000      2.689917      0.112191
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000     63.450000      4.986906
+   Number of cells of degree 2      1.000000    475.800000      9.987685
+   Number of cells of degree 3      1.000000     60.050000      5.198373
+   Number of cells of degree 4      0.500000      0.700000      0.790975
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!
+    Large diameter compared to other algorithms.
+    Fewer dead ends than most other algorithms.

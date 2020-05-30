@@ -1,0 +1,27 @@
+                     breadth first search algorithm                     
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 20
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000     64.700000      7.086681
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000     30.000000      0.000000
+          longest vertical run      1.000000     20.000000      0.000000
+        average horizontal run      1.000000     14.261055      4.673693
+          average vertical run      1.000000      9.502533      2.589346
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000     56.700000     11.098127
+   Number of cells of degree 2      1.000000    491.550000     21.719443
+   Number of cells of degree 3      1.000000     48.800000     10.516153
+   Number of cells of degree 4      0.850000      2.950000      1.669384
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!
+    As bad as a perfect maze can be!
+    Few dead ends, the result of awful texture.

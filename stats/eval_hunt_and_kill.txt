@@ -1,0 +1,26 @@
+                        Hunt and Kill algorithm                        
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    189.550000     31.823189
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      7.925000      1.308503
+          longest vertical run      1.000000      8.000000      1.585188
+        average horizontal run      1.000000      2.676480      0.094566
+          average vertical run      1.000000      2.628647      0.073077
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000     69.600000      4.759875
+   Number of cells of degree 2      1.000000    465.000000      9.367155
+   Number of cells of degree 3      1.000000     63.200000      5.034242
+   Number of cells of degree 4      0.900000      2.200000      1.362501
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!
+    Fewer dead ends than most algorithms.

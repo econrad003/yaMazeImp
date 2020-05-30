@@ -1,0 +1,49 @@
+To-do list
+
+Section 1) New programs
+
+* maze algorithms
+  * Kruskal's algorithm
+  * Prim's algorithm
+  * Eller's algorithm
+  * depth-first search (recursive backtracker)
+  * hunt and kill
+  * recursive division
+  *
+
+* grid topology
+  * torus
+  * Klein bottle
+  * polar grid
+  * cube
+    * surface
+    * solid
+  *
+
+* testing
+  * demo programs for each algorithm
+  * demo programs for each nonstandard grid (need matplotlib rendering)
+  * collect statistics for algorithms (Ortho_Evaluator class)
+  *
+
+* layout and rendering engines
+  * matplotlib
+  * inform7
+  * load/save
+  *
+
+Section 3) Existing programs
+
+* grid topology
+  * Moebius strip/cylinder
+    * separate tweaked algorithms from grid subclass
+    * rewrite test programs (need matplotlib rendering)
+    *
+
+* layout and rendering engines
+  * graphViz/dot - add edge labels
+  *
+
+
+
+

@@ -1,0 +1,25 @@
+                 Binary Tree algorithm (non-orthogonal)                 
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 20
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    102.750000     12.640266
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      9.850000      1.725200
+          longest vertical run      1.000000      8.850000      1.663066
+        average horizontal run      1.000000      2.965186      0.114783
+          average vertical run      1.000000      2.881809      0.099614
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    222.700000      5.526015
+   Number of cells of degree 2      1.000000    156.600000     11.052030
+   Number of cells of degree 3      1.000000    220.700000      5.526015
+
+
+================
+Expected values:
+    mu(v, e)=(600, 599) exactly!
+    mu(k)=1 most of the time.  (Perhaps every time?  Proof?)

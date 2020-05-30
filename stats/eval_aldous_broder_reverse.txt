@@ -1,0 +1,25 @@
+              Reverse Aldous/Broder algorithm (last exit)              
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    118.625000     18.416391
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      9.175000      1.708013
+          longest vertical run      1.000000      9.175000      1.795828
+        average horizontal run      1.000000      2.882773      0.086365
+          average vertical run      1.000000      2.874381      0.098184
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    174.725000      5.865971
+   Number of cells of degree 2      1.000000    271.950000     10.091759
+   Number of cells of degree 3      1.000000    133.925000      6.322072
+   Number of cells of degree 4      1.000000     19.400000      3.712764
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!

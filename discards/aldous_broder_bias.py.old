@@ -1,0 +1,259 @@
+# -*- coding: utf-8 -*-
+
+
+# NOTE:  UNSUCCESSFUL EXPERIMENT
+
+
+
+# aldous_broder_bias.py - an Aldous-Broder type algorithm with bias
+# Eric Conrad
+# Copyright ©2020 by Eric Conrad
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# Maintenance History:
+#     13 May 2020 - Initial version
+"""
+aldous_broder_bias.py - an Aldous-Broder type algorithm with bias
+Copyright ©2020 by Eric Conrad
+License: GNU General Public License version 3 (GNU GPLv3)
+
+This algorithm is a modification of the forward Aldous-Broder algorithm
+which has been designed to introduce a bias (i.e a nonuniformity) into the
+random walk.  
+
+Recall that the algorithm carves a passage through the wall of first
+entrance:
+
+    We perform a random walk of the entire grid.  Whenever we first arrive
+    at a cell, we carve a passage from that cell to its predecessor in the
+    walk.
+
+To introduce a bias into the random walk, we consider how we entered
+the current cell and bias the exits accordingly.
+
+Prerequisites:
+
+    These algorithms work on any connected grid.  With a bad random sequence,
+    one or the other might never terminate.
+
+Remark:
+
+    This is a homework problem in [1].
+
+References:
+
+    [1] Jamis Buck.  Mazes for Programmers.  2015 (Pragmatic Bookshelf).
+        Book (978-1-68050-055-4).
+
+Bugs:
+
+    Undoubtedly.
+"""
+
+import random
+
+class Weighted_Aldous_Broder:
+    """implementation of the Aldous-Broder algorithm with weights"""
+
+    right_turns = [["north", "east"], ["south", "west"],
+                   ["east", "south"], ["west", "north"],
+                   ["northeast", "southeast"], ["northwest", "northeast"],
+                   ["southeast", "southwest"], ["southwest", "northwest"],
+                   ["inward", "ccw"], ["outward0", "cw"],
+                   ["outward1", "cw"], ["outward2", "cw"],
+                   ["ccw", "outward0"], ["cw", "inward"]]
+
+    left_turns = [["north", "west"], ["south", "east"],
+                  ["east", "north"], ["west", "south"],
+                  ["northeast", "northwest"], ["northwest", "southwest"],
+                  ["southeast", "northeast"], ["southwest", "southeast"],
+                  ["inward", "cw"], ["outward0", "ccw"],
+                  ["outward1", "ccw"], ["outward2", "ccw"],
+                  ["cw", "outward0"], ["ccw", "inward"]]
+
+
+    reverse = [["north", "south"], ["south", "north"],
+               ["east", "west"], ["west", "east"],
+               ["northeast", "southwest"], ["northwest", "southeast"],
+               ["southeast", "northwest"], ["southwest", "northeast"],
+               ["inward", "outward0"], ["outward0", "inward"],
+               ["outward1", "inward"], ["outward2", "inward"],
+               ["cw", "ccw"], ["ccw", "cw"]]
+
+    directions = ["north", "south", "east", "west",
+                  "northeast", "northwest", "southeast", "southwest",
+                  "inward", "outward0", "outward1", "outward2",
+                  "cw", "ccw"]
+
+    @staticmethod
+    def select_exit(cell, facing_direction, weights, no_revisit):
+        """select the exit"""
+        weight_matrix = weights[facing_direction] \
+            if facing_direction in weights else []  # a list of pairs
+        for pair in weight_matrix:                  # favored directions
+            to_direction, p = pair                  # unpack the pair
+                    # some checks
+            if not cell.status(to_direction):
+                continue
+            nbr = cell.topology[to_direction]
+            if no_revisit and nbr.arcs:
+                continue 
+                    # draw lots.  a short stick wins
+            assert p<1, "Probablility p=%d must be less than 1." % p
+            toss = random.random()
+            if toss < p:                        # short stick
+                return [to_direction, nbr]
+
+            # no short sticks: choose exit at random.
+            # if all weight matrices are empty, the result is Aldous/Broder.
+        nbr = random.choice(list(cell.neighbors()))
+        for to_direction in cell.topology:
+            if cell.topology[to_direction] is nbr:
+                return [to_direction, nbr]
+        return ["nowhere", nbr]
+
+    @classmethod
+    def on(cls, grid, start=None, weights={}, no_revisit=True):
+        """a non-uniform random walk first entrance algorithm
+
+        Preconditions:
+            The grid must be connected.
+
+        Arguments:
+            grid - a grid
+            start - a starting cell - if none is specified, we choose
+                a cell at random
+            weights - a dictionary
+            no_revisit - don't apply the bias within the visited region
+
+        The weights have the following form:
+            weights[key] = [pair1, pair2, pair3, ...]
+        where:
+            key is the entrance direction (e.g. "north")
+            pair_n is a pair of consisting of a favored exit and a
+                probability.
+
+        If no weights are given, the algorithm reduces to forward
+        Aldous/Broder.
+        """
+                # start somewhere
+        cell = start if start else grid.choice()
+        facing_direction = "nowhere"
+        unvisited = len(grid) - 1
+
+        while unvisited:
+                    # go somewhere
+            facing_direction, nbr \
+                = cls.select_exit(cell, facing_direction, weights, no_revisit)
+
+            if not nbr.arcs:              # not yet visited
+                unvisited -= 1
+                cell.makePassage(nbr)
+
+            cell = nbr                    # continue the random walk
+
+    @classmethod
+    def straight_on(cls, grid, start=None, p=0.25, no_revisit=True):
+        """here we favor going forward in our random walk
+        
+        Prerequisites:
+            a N/S/E/W or inward/cw/ccw grid structure
+
+            (Outward directions are not fully handled.)
+        """
+        p1 = p / 2
+        p2 = p / (2 - p)
+        weights = {}
+        for d in cls.directions:
+            weights[d] = [[d, p1]]
+        for pair in cls.reverse:
+            d1, d2 = pair
+            weights[d1] = [[d2, p2]]
+        weights["outward1"] = [["outward0", p]]
+        weights["outward2"] = [["outward0", p]]
+        cls.on(grid, start, weights, no_revisit=no_revisit)
+
+    @classmethod
+    def right_on(cls, grid, start=None, p=0.25, no_revisit=True):
+        """here we favor turning right in our random walk
+        
+        Prerequisites:
+            a N/S/E/W or inward/cw/ccw grid structure
+
+            (Outward directions are not fully handled.)
+        """
+        weights = {}
+        for pair in cls.right_turns:
+            d1, d2 = pair
+            weights[d1] = [[d2, p]]
+        cls.on(grid, start, weights, no_revisit=no_revisit)
+
+    @classmethod
+    def left_on(cls, grid, start=None, p=0.25, no_revisit=True):
+        """here we favor turning left in our random walk
+        
+        Prerequisites:
+            a N/S/E/W or inward/cw/ccw grid structure
+
+            (Outward directions are not fully handled.)
+        """
+        weights = {}
+        for pair in cls.left_turns:
+            d1, d2 = pair
+            weights[d1] = [[d2, p]]
+        cls.on(grid, start, weights, no_revisit=no_revisit)
+
+
+    @classmethod
+    def turn_on(cls, grid, start=None, p=0.25, no_revisit=True):
+        """here we favor turning in our random walk
+        
+        Prerequisites:
+            a N/S/E/W or inward/cw/ccw grid structure
+
+            (Outward directions are not fully handled.)
+        """
+        p1 = p / 2
+        p2 = p / (2 - p)
+        weights = {}
+        for pair in cls.left_turns:
+            d1, d2 = pair
+            weights[d1] = [[d2, p1]]
+        for pair in cls.right_turns:
+            d1, d2 = pair
+            if d1 in weights:
+                weights[d1].append([d2, p2])
+            else:
+                weights[d1] = [[d2, p1]]
+        cls.on(grid, start, weights, no_revisit=no_revisit)
+
+    @classmethod
+    def magnet_on(cls, grid, d, start=None, p=0.025, no_revisit=True):
+        """here we favor a particular direction in our random walk
+        
+        Prerequisites:
+            a N/S/E/W or inward/cw/ccw grid structure
+
+            (Outward directions are not fully handled.)
+
+        Remarks:
+            Extremely slow when no_revisit is False for 20x30 grids if p>0.1
+        """
+        weights = {}
+        for d1 in cls.directions:
+            weights[d1] = [[d, p]]
+        cls.on(grid, start, weights, no_revisit=no_revisit)
+
+# END: aldous_broder_bias.py

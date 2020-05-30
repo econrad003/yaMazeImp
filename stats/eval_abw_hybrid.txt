@@ -1,0 +1,25 @@
+           Aldous/Broder/Wilson hybrid algorithm (50% cutoff)           
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    116.550000     18.511189
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      8.625000      1.078639
+          longest vertical run      1.000000      8.750000      1.690850
+        average horizontal run      1.000000      2.919082      0.096182
+          average vertical run      1.000000      2.862763      0.084391
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    177.575000      6.872045
+   Number of cells of degree 2      1.000000    268.650000     11.643310
+   Number of cells of degree 3      1.000000    131.975000      7.478131
+   Number of cells of degree 4      1.000000     21.800000      4.547188
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!

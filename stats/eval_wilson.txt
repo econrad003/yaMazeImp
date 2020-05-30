@@ -1,0 +1,25 @@
+            Wilson's algorithm (circuit-erased random walk)            
+
+Parameters: Rectangular_Grid(20, 30)
+Sample size: 40
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000    114.250000     17.345287
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000      9.150000      1.594059
+          longest vertical run      1.000000      8.575000      1.631226
+        average horizontal run      1.000000      2.889384      0.077946
+          average vertical run      1.000000      2.858020      0.083896
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    174.250000      6.538839
+   Number of cells of degree 2      1.000000    273.250000     11.457279
+   Number of cells of degree 3      1.000000    132.750000      6.459936
+   Number of cells of degree 4      1.000000     19.750000      3.593085
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!

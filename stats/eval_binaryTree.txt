@@ -1,0 +1,26 @@
+                      Binary Tree algorithm (N/E)                      
+
+Parameters: Rectangular_Grid(20, 30), bias=50%
+Sample size: 20
+
+                          Item             p            mu         sigma
+------------------------------ ------------- ------------- -------------
+   Maze characteristic (v-e-k)      1.000000      0.000000      0.000000
+                  Diameter (d)      1.000000     86.500000      4.285840
+        Number of passages (e)      1.000000    599.000000      0.000000
+      Number of components (k)      1.000000      1.000000      0.000000
+        longest horizontal run      1.000000     30.000000      0.000000
+          longest vertical run      1.000000     20.000000      0.000000
+        average horizontal run      1.000000      3.167487      0.103659
+          average vertical run      1.000000      2.979264      0.098471
+           Number of cells (v)      1.000000    600.000000      0.000000
+           Number of dead ends      1.000000    150.300000      6.681475
+   Number of cells of degree 2      1.000000    301.400000     13.362950
+   Number of cells of degree 3      1.000000    148.300000      6.681475
+
+
+================
+Expected values:
+    mu(v, e, k)=(600, 599, 1) exactly!
+    Top row is a horizontal run.
+    Last column is a vertical rise.
