@@ -17,7 +17,13 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 ### 2.1 Recent additions and changes
 
-14 July 2020 (Bastille Day) -- **Theta Mazes** -- Added the script *polar_demo.py* to create polar mazes (also known as theta mazes).  The associated python programs are *polar_cell.py* (to manage cells), *polar_grid.py* (to manage the associated grids), and *layout_plot_polar.py* (to handle displaying the maze using *matplotlib*).  The layout displays cells as polygons instead of circular bars because the managing circular bars would require using superimposed axes, specifically polar coordinates for flood-filling the circular bars and rectangular coordinates for drawing boundary arcs. Jamis Buck uses essentially the same polygon scheme with his *ruby* *chunky_png* layout of theta mazes.  Two kinds of mazes can be produced -- one kind having a single cell at the pole, and the other with several wedge cells that all circle about the pole.  A cell's neighbors are inward, clockwise, counterclockwise, and outward.  A cell may have more than one outward neighbor.
+#### 14 July 2020 (Bastille Day)
+
+**Theta Mazes** -- Added the script *polar_demo.py* to create polar mazes (also known as theta mazes).  The associated python programs are *polar_cell.py* (to manage cells), *polar_grid.py* (to manage the associated grids), and *layout_plot_polar.py* (to handle displaying the maze using *matplotlib*).
+
+The layout displays cells as polygons instead of circular bars because the managing circular bars would require using superimposed axes, specifically polar coordinates for flood-filling the circular bars and rectangular coordinates for drawing boundary arcs. Jamis Buck uses essentially the same polygon scheme with his *ruby* *chunky_png* layout of theta mazes.  Two kinds of mazes can be produced -- one kind having a single cell at the pole, and the other with several wedge cells that all circle about the pole.  A cell's neighbors are inward, clockwise, counterclockwise, and outward.  A cell may have more than one outward neighbor.
+
+Two demonstration files were added in the *demos* directory: *demos/polar1.png* and *demos/polar2.png*.  These were produced by running *polar_demo.py*. They are the results of applying the first-entry Aldous-Broder algorithm to both kinds of polar grid.
 
 ## 3 Algorithms
 
