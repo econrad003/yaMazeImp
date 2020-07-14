@@ -8,12 +8,16 @@ This is a collection of maze algorithms and scripts that were implemented primar
 
 ## 2 Scripts
 
-* *make-maze.py* - a script to create rectangular mazes using standard algorithms
+* *make_maze.py* - a script to create rectangular mazes using standard algorithms
 * *texturizer.py* - a script to create texture matrices using standard algorithms
-* *eval-xxxxx.py* - a collection of scripts to generate a number of mazes using a given algorithm and collect statistics on those mazes
-* *xxxxx-demo.py* - a collection of scripts to demonstrate particular objects, including special kinds of mazes ( for example: polar mazes, sigma mazes, delta mazes, upsilon mazes) or to test features (such as layout programs)
+* *eval_xxxxx.py* - a collection of scripts to generate a number of mazes using a given algorithm and collect statistics on those mazes
+* *xxxxx_demo.py* - a collection of scripts to demonstrate particular objects, including special kinds of mazes ( for example: polar mazes, sigma mazes, delta mazes, upsilon mazes) or to test features (such as layout programs)
 
 The scripts *entab.py* and *detab.py* are respectively a script to replace spaces by tabs and a script to replace tabs by spaces.  They have nothing to do with mazes.  I use them because the text editor that I use (Gnome's TextEditor) cannot be configured to use spaces for Python and tabs for some other language.  The space/tab configuration is all or nothing.  Nor can it be configured correctly to do entabbing or detabbing.
+
+### 2.1 Recent additions and changes
+
+14 July 2020 (Bastille Day) -- **Theta Mazes** -- Added the script *polar_demo.py* to create polar mazes (also known as theta mazes).  The associated python programs are *polar_cell.py* (to manage cells), *polar_grid.py* (to manage the associated grids), and *layout_plot_polar.py* (to handle displaying the maze using *matplotlib*).  The layout displays cells as polygons instead of circular bars because the managing circular bars would require using superimposed axes, specifically polar coordinates for flood-filling the circular bars and rectangular coordinates for drawing boundary arcs. Jamis Buck uses essentially the same polygon scheme with his *ruby* *chunky_png* layout of theta mazes.  Two kinds of mazes can be produced -- one kind having a single cell at the pole, and the other with several wedge cells that all circle about the pole.  A cell's neighbors are inward, clockwise, counterclockwise, and outward.  A cell may have more than one outward neighbor.
 
 ## 3 Algorithms
 
@@ -44,6 +48,7 @@ The programs *grid.py* and *cell.py* describe the basic grid and cell classes th
 * *ortho_delta_grid.py* - a grid of right triangular cells arranged in a rectangle
 * *ortho_sigma_grid.py* - a grid of regular hexagonal cells arranged in an approximate rectangle, much like a beekeeper's honeycomb
 * *ortho_upsilon_grid.py* - a grid consisting of alternating regular octagonal cells and square cells, arranged in an approximate rectangle
+* *polar_grid.py* - a polar (or theta) grid consisting of concentric circles of cells about the center or pole.  A cell may have an inward neighbor, a clockwise neighbor, a counterclockwise neighbor, and some outward neighbors. The pole may be occupied by a single central cell, or optionally a several pie-shaped wedges forming a circle about the pole.
 * *rectangular_grid.py* - the simple N/S/E/W rectangular grid of square cells
 
 The function of the various cell programs should be mostly self-explanatory.  Much of the actual work is done in the grid programs and in the layout programs.  ASCII and unicode layout are handled in *rectangular_grid.py*.
