@@ -17,6 +17,10 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 ### 2.1 Recent additions and changes
 
+#### 25 July 2020
+
+**Theta Mazes** -- Minor tweaking of code, some in reponse to pylint3 warnings  Also, descriptive titles were added to the demos.  In addition, I've added a version of the basic E-N binary tree algorithm for theta mazes.  This one proceeds through a theta (polar) grid in a CCW-inward manner.  As in inwinder (the theta version of sidewinder), each latitude requires a hard counterclockwise boundary.  See *binary_tree_polar.py* and *polar_binary_demo.py* for details.  Also, four demos will be updated with titles and two (for the polar binary trees) will be added in short order.
+
 #### 14 July 2020 (Bastille Day)
 
 **Theta Mazes** -- Added the script *polar_demo.py* to create polar mazes (also known as theta mazes).  The associated python programs are *polar_cell.py* (to manage cells), *polar_grid.py* (to manage the associated grids), and *layout_plot_polar.py* (to handle displaying the maze using *matplotlib*).
