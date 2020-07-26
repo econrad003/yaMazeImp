@@ -38,122 +38,144 @@ Bugs:
     be properly rendered.
 """
 
-from layout_plot_color import Color_Layout
-import matplotlib.patches as patches
 from math import cos, sin, pi
+import matplotlib.patches as patches
+from layout_plot_color import Color_Layout
 
 class Polar_Layout(Color_Layout):
     """implementation of polar maze plotting"""
-    
+
     def __init__(self, grid, plt, **kwargs):
         """constructor"""
-        self.grid = grid
-        self.plt = plt
-        self.kwargs = kwargs
-        self.color = {}               # default - no colors
-        self.palette ={}              # palette
-
+            ##################################################################
             # We should really use polar coordinates, but matplotlib support
             # for polar coordinates is inconsistent and poorly documented.
+            #
+            # Note: we can associate polar coordinates with an Axes object
+            # that has rectangular coordinates, but documentation is weak
+            # and the feature does not seem to be well-known, indicating
+            # that the feature may be unstable.)
+            #
+            # It's not as aesthetically pleasing near the center (aka the
+            # pole) but as a workaround we instead just draw polygons.
+            # Note: Some special manipulation of fig and ax in kwargs may
+            # need to be placed here if we do use polar coordinates.
+            #
+            # For the moment, all we need is the parent constructor...  But
+            # pylint doesn't like a constructor that just calls the parent,
+            # so...
+            ##################################################################
 
-        self.fig, self.ax = kwargs["figure"] if "figure" in kwargs \
-            else plt.subplots(1, 1)
-        if "title" in self.kwargs:
-            self.ax.set_title(self.kwargs["title"])
+            # pylint: disable=useless-super-delegation
 
-    def draw_cell(self, cell, color):
-        """draw a square cell with no inset"""
-            # get the cell geometry
-        celltype = cell.celltype
-        if celltype[0] == 'sector':     # annular sector
-            r0, r1, theta1, theta2 = celltype[1:]
-        elif celltype[0] == 'wedge':    # circular sector
-            r1, theta1, theta2 = celltype[1:]
-            r0 = 0
-        else:   # celltype[0] == 'circle'
-            r1 = celltype[1]
-            theta1 = 0
-            theta2 = 1
-            r0 = 0
+        super().__init__(grid, plt, **kwargs)
 
-            # from revolutions to radians
-        theta1 *= 2 * pi
+    def draw_annular_sector(self, cell, color, celltype):
+        """draw an annular sector cell with no inset"""
+            # Sorry, but this needs all these variables to be readable!
+            # pylint: disable=too-many-locals
+        r0, r1, theta1, theta2 = celltype       # unpack coordinates
+        theta1 *= 2 * pi                        # convert to radians
         theta2 *= 2 * pi
 
-            # draw the face
-#       We need to figure out how to do this in rectangular coordinates...
-#         It would be easy in polar coordinates using bars, but then we have
-#       the problem of drawing arcs of a given radius about the center...
-#       This second ploblem can be solved by applying two sets of coordinates
-#       to the axes, but the required code would be hard to support.
+            # We could paint the faces using a polar bar chart, but matplotlib
+            # has surprisingly poor support (or possibly just poor
+            # documentation) for drawing the walled edges in polar
+            # coordinates.
 
             # workaround - polygonal faces
         if cell in self.color:
             outwards = cell.outwards
             if outwards is 0:
-                outwards = 20
-            xy = []
-                # lay out the outer wall of the cell
+                outwards = 20                   # to give roundness
+            xy = []                             # points in ccw order
+                # first lay out the outer wall of the cell
             for i in range(outwards+1):
                 theta = theta1 + (i * (theta2 - theta1)/outwards)
                 xy.append((r1 * cos(theta), r1 * sin(theta)))
-
-                # and inner wall if applicable
-            if celltype[0] == 'sector':
-                xy.append((r0 * cos(theta2), r0 * sin(theta2)))
-                xy.append((r0 * cos(theta1), r0 * sin(theta1)))
-            elif celltype[0] == 'wedge':
-                xy.append((0, 0))
-
+                # now lay out the inner wall (note order!)
+            xy.append((r0 * cos(theta2), r0 * sin(theta2)))
+            xy.append((r0 * cos(theta1), r0 * sin(theta1)))
             polygon = patches.Polygon(xy, closed=True,
                                       facecolor=self.palette[self.color[cell]])
             self.ax.add_patch(polygon)
 
-              # polar coordinate bars
-#        if cell in self.color:
-#            facecolor = self.palette[self.color[cell]]
-#            align = 'edge'
-#            width = theta2 - theta1
-#            bar = ax.bar(theta1, r1, width=width, bottom=r0, color=facecolor)
+            # draw the inward and counterclockwise walls
+        if not cell.status("ccw"):
+                # rectangular coordinates
+            xx = [r0 * cos(theta2), r1 * cos(theta2)]
+            yy = [r0 * sin(theta2), r1 * sin(theta2)]
+            self.draw_polyline(xx, yy, color)
+        if not cell.status("inward"):
+                # polygonal compromise
+            xx = [r0 * cos(theta1), r0 * cos(theta2)]
+            yy = [r0 * sin(theta1), r0 * sin(theta2)]
+            self.draw_polyline(xx, yy, color)
 
-        # Important: here we do not call super()
+    def draw_polar_wedge(self, cell, color, celltype):
+        """draw a wedge cell at the pole with no inset"""
+            # Sorry, but this needs all these variables to be readable!
+            # pylint: disable=too-many-locals
+        r1, theta1, theta2 = celltype           # unpack coordinates
+        r0 = 0
+        theta1 *= 2 * pi                        # convert to radians
+        theta2 *= 2 * pi
 
-            # draw the walls
-        # print("%s (%f-%f,%f-%f)" % (cell.name, r0, r1, theta1, theta2))
-        n = len(cell.directions)
-        for i in range(n):
-            direction = cell.directions[i]
-            if not cell.status(direction):
-                if direction == "ccw":
-                        # polar coordinates
-#                    self.draw_polyline([theta1, theta1], [r0, r1], color)
+            # workaround - polygonal faces
+        if cell in self.color:
+            outwards = cell.outwards
+            if outwards is 0:
+                outwards = 20                   # to give roundness
+            xy = []                             # points in ccw order
+                # first lay out the outer wall of the cell
+            for i in range(outwards+1):
+                theta = theta1 + (i * (theta2 - theta1)/outwards)
+                xy.append((r1 * cos(theta), r1 * sin(theta)))
+                # now connect the outer wall to the pole
+            xy.append((0, 0))
+            polygon = patches.Polygon(xy, closed=True,
+                                      facecolor=self.palette[self.color[cell]])
+            self.ax.add_patch(polygon)
 
-                        # rectangular coordinates
-                    xx = [r0 * cos(theta2), r1 * cos(theta2)]
-                    yy = [r0 * sin(theta2), r1 * sin(theta2)]
-                    self.draw_polyline(xx, yy, color)
+            # draw the counterclockwise wall
+        if not cell.status("ccw"):
+                # rectangular coordinates
+            xx = [r0 * cos(theta2), r1 * cos(theta2)]
+            yy = [r0 * sin(theta2), r1 * sin(theta2)]
+            self.draw_polyline(xx, yy, color)
 
-                elif direction == "inward":
-                        # polar coordinates - this does not work at all
-#                    ts = np.arange(theta1, theta2, 0.1)
-#                    for t in ts:
-#                        self.plt.polar(t, r0)
+    def draw_pole_cell(self, cell, r1):
+        """draw a circular cell about the pole with no inset"""
+        # this one is easy - just draw the face as there is no ccw
+        # wall and no inward wall.
+        if cell not in self.color:
+            return
+        theta1 = 0
+        theta2 = 2 * pi
 
-                        # this works (in a manner) but is incompatible with bars above
-#                    self.draw_polyline([theta1, theta2], [r0, r0], color)
+            # workaround - polygonal faces
+        outwards = cell.outwards
+        if outwards is 0:
+            outwards = 20                   # to give roundness
+        xy = []
+            # lay out the outer wall of the cell
+        for i in range(outwards+1):
+            theta = theta1 + (i * (theta2 - theta1)/outwards)
+            xy.append((r1 * cos(theta), r1 * sin(theta)))
+        polygon = patches.Polygon(xy, closed=True,
+                                  facecolor=self.palette[self.color[cell]])
+        self.ax.add_patch(polygon)
 
-                        # rectangular coordinates - this works, but it's crappy
-#                    t1 = theta1 * 180 / pi    # we need degrees!!!
-#                    t2 = theta2 * 180 / pi    # more degrees!!!
-#                    d = 2 * r0                # diameter, not radius
-#                    arc = patches.Arc([0, 0], d, d, theta1=t1, theta2=t2,
-#                                      edgecolor=color)
-#                    self.ax.add_patch(arc)
-
-                        # and this is the polygonal compromise
-                    xx = [r0 * cos(theta1), r0 * cos(theta2)]
-                    yy = [r0 * sin(theta1), r0 * sin(theta2)]
-                    self.draw_polyline(xx, yy, color)
+    def draw_cell(self, cell, color):
+        """draw a cell with no inset"""
+            # get the cell geometry
+        celltype = cell.celltype
+        if celltype[0] == 'sector':     # annular sector
+            self.draw_annular_sector(cell, color, celltype[1:])
+        elif celltype[0] == 'wedge':    # circular sector
+            self.draw_polar_wedge(cell, color, celltype[1:])
+        else:   # celltype[0] == 'circle'
+            self.draw_pole_cell(cell, celltype[1])
 
     def draw_grid(self, linecolor="black"):
         """draw the maze"""

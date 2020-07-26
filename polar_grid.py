@@ -18,6 +18,7 @@
 #
 # Maintenance History:
 #     1 Jun 2020 - Initial version
+#     25 Jul 2020 - spruce up with pylint3
 """
 polar_grid.py - polar grid and maze implementation
 Copyright ©2020 by Eric Conrad
@@ -38,9 +39,10 @@ Bugs:
     Unknown.
 """
 
+# from math import sin, cos, pi
+from math import pi
 from polar_cell import Polar_Cell
 from grid import Grid
-from math import sin, cos, pi
 
 class Polar_Grid(Grid):
     """polar grid implementation"""
@@ -104,7 +106,7 @@ class Polar_Grid(Grid):
         for i in range(outwards):
             directions.append("outward%d" % i)
 
-        index = (0,0)
+        index = (0, 0)
         self[index] = Polar_Cell(index, directions, outwards, celltype)
         self.latitude[0].append(self[index])
         return outwards
@@ -125,7 +127,7 @@ class Polar_Grid(Grid):
 
         for j in range(n):
             celltype = ['wedge', 1, j/n, (j+1)/n]
-            index = (0,j)
+            index = (0, j)
             self[index] = Polar_Cell(index, directions, outwards, celltype)
             self.latitude[0].append(self[index])
         return outwards
@@ -148,7 +150,7 @@ class Polar_Grid(Grid):
 
         for j in range(n):
             celltype = ['sector', i, i+1, j/n, (j+1)/n]
-            index = (i,j)
+            index = (i, j)
             self[index] = Polar_Cell(index, directions, outwards, celltype)
             self.latitude[i].append(self[index])
         return outwards
@@ -200,7 +202,7 @@ class Polar_Grid(Grid):
         # Since the number of cells in a given longitude range varies
         #   by latitude, we only support latitude-major (i.e. row-major)
         #   iteration.
- 
+
     def each_row(self):
         """iterate row by row"""
         for i in range(self.rows):
@@ -213,4 +215,4 @@ class Polar_Grid(Grid):
             for j in range(cols):
                 yield self[i, j]
 
-# END: pollar_grid.py
+# END: polar_grid.py

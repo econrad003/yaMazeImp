@@ -19,11 +19,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ##############################################################################
 # Maintenance History:
-#     11 Jul 2020 - Initial version
+#     15 Jul 2020 - Initial version
 #     25 Jul 2020 - Add titles to the plots
 ##############################################################################
 """
-polar_demo.py - polar maze testing
+inwinder_demo.py - inwinder algorithm testing
 Copyright ©2020 by Eric Conrad
 License: GNU General Public License version 3 (GNU GPLv3)
 
@@ -32,9 +32,9 @@ References:
     [1] Jamis Buck.  Mazes for Programmers.  2015 (Pragmatic Bookshelf).
         Book (978-1-68050-055-4).
 """
-from aldous_broder import Aldous_Broder
+from inwinder import Inwinder
 
-desc = 'Create a maze by applying Aldous/Broder to a polar grid.'
+desc = 'Create a maze by applying Inwinder to a polar grid.'
 
 def main(args):
     """entry point"""
@@ -44,28 +44,28 @@ def main(args):
 
     m = 20
     grid = Polar_Grid(m)
-    Aldous_Broder.on(grid)
+    Inwinder.on(grid)
 
-    layout = Polar_Layout(grid, plt, title="Aldous/Broder - Single Pole Cell")
+    layout = Polar_Layout(grid, plt, title="Inwinder - Single Pole Cell")
     layout.palette[0] = 'red'
     layout.palette[1] = 'green'
     layout.color[grid[0,0]] = 0
     layout.color[grid[m-1, 0]] = 1
 
     layout.draw_grid()
-    layout.render('demos/polar1.png')
+    layout.render('demos/inwinder1.png')
 
     grid = Polar_Grid(m, poleCells=3)
-    Aldous_Broder.on(grid)
+    Inwinder.on(grid)
 
-    layout = Polar_Layout(grid, plt, title="Aldous/Broder - Three Wedges at Pole")
+    layout = Polar_Layout(grid, plt, title="Inwinder - Three Wedges at Pole")
     layout.palette[0] = 'red'
     layout.palette[1] = 'green'
     layout.color[grid[0,0]] = 0
     layout.color[grid[m-1, 0]] = 1
 
     layout.draw_grid()
-    layout.render('demos/polar2.png')
+    layout.render('demos/inwinder2.png')
     # plt.show()
 
 if __name__ == "__main__":
@@ -74,4 +74,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     main(args)
 
-# END: polar_demo.py
+# END: inwinder_demo.py

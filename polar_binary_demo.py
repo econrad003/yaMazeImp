@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 ##############################################################################
-# polar_demo.py - test the polar maze and polar layout implementations
+# polar_binary_demo.py - test the polar binary tree implementation
 # Eric Conrad
 # Copyright ©2020 by Eric Conrad
 #
@@ -19,11 +19,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ##############################################################################
 # Maintenance History:
-#     11 Jul 2020 - Initial version
-#     25 Jul 2020 - Add titles to the plots
+#     25 Jul 2020 - Initial version
 ##############################################################################
 """
-polar_demo.py - polar maze testing
+polar_binary_demo.py - polar maze binary tree testing
 Copyright ©2020 by Eric Conrad
 License: GNU General Public License version 3 (GNU GPLv3)
 
@@ -32,9 +31,9 @@ References:
     [1] Jamis Buck.  Mazes for Programmers.  2015 (Pragmatic Bookshelf).
         Book (978-1-68050-055-4).
 """
-from aldous_broder import Aldous_Broder
+from binary_tree_polar import Binary_Tree_Polar
 
-desc = 'Create a maze by applying Aldous/Broder to a polar grid.'
+desc = 'Create a theta maze by applying the polar binary tree algorithm.'
 
 def main(args):
     """entry point"""
@@ -44,28 +43,28 @@ def main(args):
 
     m = 20
     grid = Polar_Grid(m)
-    Aldous_Broder.on(grid)
+    Binary_Tree_Polar.on(grid)
 
-    layout = Polar_Layout(grid, plt, title="Aldous/Broder - Single Pole Cell")
+    layout = Polar_Layout(grid, plt, title="Polar Binary Tree - Single Pole Cell")
     layout.palette[0] = 'red'
     layout.palette[1] = 'green'
     layout.color[grid[0,0]] = 0
     layout.color[grid[m-1, 0]] = 1
 
     layout.draw_grid()
-    layout.render('demos/polar1.png')
+    layout.render('demos/polar_binary1.png')
 
     grid = Polar_Grid(m, poleCells=3)
-    Aldous_Broder.on(grid)
+    Binary_Tree_Polar.on(grid)
 
-    layout = Polar_Layout(grid, plt, title="Aldous/Broder - Three Wedges at Pole")
+    layout = Polar_Layout(grid, plt, title="Polar Binary Tree - Three Wedges at Pole")
     layout.palette[0] = 'red'
     layout.palette[1] = 'green'
     layout.color[grid[0,0]] = 0
     layout.color[grid[m-1, 0]] = 1
 
     layout.draw_grid()
-    layout.render('demos/polar2.png')
+    layout.render('demos/polar_binary2.png')
     # plt.show()
 
 if __name__ == "__main__":
