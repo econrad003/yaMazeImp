@@ -19,7 +19,7 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 #### 26 July 2020
 
-**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two exxamples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
+**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two examples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
 
 #### 25 July 2020
 
