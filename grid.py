@@ -20,6 +20,7 @@
 # Maintenance History:
 #     21 Apr 2020 - EC - Initial version
 #     23 Apr 2020 - EC - Add return value to __setitem__
+#     26 Jul 2020 - EC - Add dead_ends and braid methods
 # Credits:
 #     EC - Eric Conrad
 ##############################################################################
@@ -118,6 +119,38 @@ class Grid(object):
         """iterate over the cells"""
         for index in self.cells:
             yield self.cells[index]
+
+        # braiding
+
+    def dead_ends(self):
+        """return a list of current dead ends"""
+        impasses = []
+        for cell in self.each():
+            if len(cell.passages()) is 1:     # degree 1 in maze
+                impasses.append(cell)
+        return impasses
+
+    def braid(self, bias=1.0):
+        """eliminate some or all dead ends"""
+        from random import random, shuffle, choice
+
+        impasses = self.dead_ends()
+        if not impasses:
+            return
+
+        shuffle(impasses)
+        for cell in impasses:
+            if len(cell.passages()) is not 1:
+                continue                      # skip if not an impasse
+            if bias <= 0.0 or random() > bias:
+                continue                      # skip if tails
+            escapes = []
+            for nbr in cell.each_neighbor():
+                if not cell.have_passage(nbr):
+                    escapes.append(nbr)       # candidate passage
+            if escapes:
+                nbr = choice(escapes)
+                cell.makePassage(nbr)
 
         # special methods
 

@@ -17,6 +17,10 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 ### 2.1 Recent additions and changes
 
+#### 26 July 2020
+
+**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two exxamples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
+
 #### 25 July 2020
 
 **Theta Mazes** -- Minor tweaking of code, some in reponse to pylint3 warnings  Also, descriptive titles were added to the demos.  In addition, I've added a version of the basic E-N binary tree algorithm for theta mazes.  This one proceeds through a theta (polar) grid in a CCW-inward manner.  As in inwinder (the theta version of sidewinder), each latitude requires a hard counterclockwise boundary.  See *binary_tree_polar.py* and *polar_binary_demo.py* for details.  Also, four demos will be updated with titles and two (for the polar binary trees) will be added in short order.
@@ -72,5 +76,6 @@ Most derived grids support plot layouts using MatPlotLib, though in most cases, 
 ## References
 
 1. Buck (2015) - Jamis Buck.   *Mazes for Programmers*.  Pragmatic Bookshelf, 2015.  ISBN-13 978-1-68050-055-4.
+
 
 
