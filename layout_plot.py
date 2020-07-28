@@ -18,6 +18,7 @@
 #
 # Maintenance History:
 #     12 May 2020 - Initial version
+#     27 Jul 2020 - Add draw_inset_cell method
 """
 layout_plot.py - basic plotter implementation for rectangular mazes
 Copyright ©2020 by Eric Conrad
@@ -64,13 +65,70 @@ class Layout(object):
         if not cell.status("west"):
             self.draw_polyline([x3, x0], [y3, y0], color)
 
+    def draw_inset_cell(self, cell, color, inset):
+        """draw a square cell with a given inset"""
+        x, y = cell.position
+        half = cell.scale / 2
+        if half <= inset:
+            self.draw_cell(cell, color)
+            return
+        xx = [x-half, x-half+inset, x+half-inset, x+half]
+        yy = [y-half, y-half+inset, y+half-inset, y+half]
+
+        if cell.status("south"):        # southward passage
+            y0, y1 = yy[1], yy[0]
+            x0 = x1 = xx[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+            x0 = x1 = xx[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+        else:                           # southward wall
+            x0, x1 = xx[1], xx[2]
+            y0 = y1 = yy[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+
+        if cell.status("east"):         # eastward passage
+            x0, x1 = xx[2], xx[3]
+            y0 = y1 = yy[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+            y0 = y1 = yy[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+        else:                           # eastward wall
+            y0, y1 = yy[1], yy[2]
+            x0 = x1 = xx[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+
+        if cell.status("north"):        # northward passage
+            y0, y1 = yy[2], yy[3]
+            x0 = x1 = xx[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+            x0 = x1 = xx[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+        else:                           # northward wall
+            x0, x1 = xx[1], xx[2]
+            y0 = y1 = yy[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+
+        if cell.status("west"):         # westward passage
+            x0, x1 = xx[0], xx[1]
+            y0 = y1 = yy[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+            y0 = y1 = yy[2]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+        else:                           # westward wall
+            y0, y1 = yy[1], yy[2]
+            x0 = x1 = xx[1]
+            self.draw_polyline([x0, x1], [y0, y1], color)
+
     def draw_polyline(self, X, Y, linecolor):
         """draw a wall"""
         self.ax.plot(X, Y, color=linecolor)
 
     def draw_grid(self, linecolor="black"):
         for cell in self.grid.each():
-            self.draw_cell(cell, linecolor)
+            if cell.inset > 0:
+                self.draw_inset_cell(cell, linecolor, cell.inset)
+            else:
+                self.draw_cell(cell, linecolor)
 
     def render(self, filename, tight=False):
         """render the output"""

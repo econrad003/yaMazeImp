@@ -1,6 +1,17 @@
 # yaMazeImp
-Yet another maze implementation
-Eric Conrad
+"Yet another maze implementation"
+by Eric Conrad.
+
+## Overview
+
+* 1 **Description**
+* 2 **Scripts**
+* 2.1 **Change log**
+* 3 **Algorithms**
+* 3.1 **Maze generation**
+* 3.2 **Other algorithms**
+* 4 **Grids and cells**
+* 5 **Layouts**
 
 ## 1 Description
 
@@ -15,11 +26,15 @@ This is a collection of maze algorithms and scripts that were implemented primar
 
 The scripts *entab.py* and *detab.py* are respectively a script to replace spaces by tabs and a script to replace tabs by spaces.  They have nothing to do with mazes.  I use them because the text editor that I use (Gnome's TextEditor) cannot be configured to use spaces for Python and tabs for some other language.  The space/tab configuration is all or nothing.  Nor can it be configured correctly to do entabbing or detabbing.
 
-### 2.1 Recent additions and changes
+### 2.1 Change log
+
+#### 27 July 2020
+
+**Inset Mazes** -- When using *matplotlib* to plot rectangular mazes, the Layout and Color_Layout classes now handle insets.  Method *draw_grid* in *layout_plot.py* directs cells with insets to new method *draw_inset_cell* which has been added to *layout_plot.py* (for walls and passages) and *layout_color.py* (for filling the interior of a cell).  A demonstration program *inset_demo.py* produces a test plot.
 
 #### 26 July 2020
 
-**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two examples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
+**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two exxamples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
 
 #### 25 July 2020
 
@@ -42,7 +57,9 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
 * *aldous_broder.py* - implementations of the first-entrance random walk algorithm (Aldous/Broder) and the last-exit random walk algorithm (reverse Aldous/Broder) for generating (theoretically) uniformly random spanning trees on a connected simple graph, or equivalently, uniformly random perfect mazes on a connected grid. (The first-entrance algorithm is described in Buck (2015).)  The algorithm tends to start quickly and end slowly, unlike Wilson's algorithm which tends to start slowly and end quickly.
 * *binary_tree.py* - implementation of a simple binary spanning tree algorithm for rectangular mazes.  This is the binary tree algorithm described in Buck (2015).
 * *binary_tree2.py* - implementation of a binary tree algorithm that works most of the time for generating perfect mazes on arbitrary grids.  When it fails, the result is a binary spanning forest. When used on rectangular grids, the result is typically a binary spanning tree which cannot be produced by Jamis Buck's binary tree algorithm.
+* *binary_tree_polar.py* - and adaptation of the simple binary tree algorithm from Buck (2015) for theta (polar) mazes. 
 * *hunt_and_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
+* *inwinder.py* - an adaptation of the sidewinder algorithm for theta (polar) mazes.
 * *recursive_backtracker.py* - the unfortunately misnamed depth-first search algorithm for producing perfect mazes in a connected grid.  The implementation is stack-based to avoid recursion.  (See also: *tree_search.py*.)
 * *sidewinder.py* - a modification of Buck's binary spanning tree algorithm which eliminates one bias in that algorithm.  It only works on rectangular grids or (more generally) on grids which can be traversed in two orthogonal directions.  The resulting spanning trees can be binary, but usually are not.
 * *tree_search.py* -  included are alternative spanning tree search algorithms using a queue (breadth-first search) or a priority-queue (best-first search).  These complement the stack-based depth-first search algorithm used in *recursive-backtracker.py*.

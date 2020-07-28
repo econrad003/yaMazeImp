@@ -18,6 +18,11 @@
 #
 # Maintenance History:
 #     12 May 2020 - Initial version
+#     26 Jul 2020 - Add method to color inset cells
+#     28 Jul 2020 - Need to color passages for inset cells.
+#       Note to self: For undercells, only the passage are colored as the
+#         body of the cell is hidden from view.  This will be important in
+#         weave mazes.
 """
 layout_plot_color.py - basic plotting with color for rectangular mazes
 Copyright ©2020 by Eric Conrad
@@ -57,6 +62,62 @@ class Color_Layout(Layout):
                                      facecolor=facecolor)
             self.ax.add_patch(rect)
         super().draw_cell(cell, color)
+
+    def draw_inset_cell(self, cell, color, inset):
+        """draw a square cell with an inset"""
+        scale = cell.scale
+        half = cell.scale / 2.0
+        if half <= inset:
+                # this is an error.  To recover, we draw the cell plainly.
+            self.draw_cell(cell, color)
+            return
+
+        if cell not in self.color:
+                # cell is not colored; just draw walls and passages...
+            super().draw_inset_cell(cell, color, inset)
+            return
+
+            # color the face and passages of the cell.
+            # 
+            # if this is a weave maze and the cell is an undercell, we don't
+            # color the face as it is hidden by its parent cell.
+
+        facecolor = self.palette[self.color[cell]]
+        x, y = cell.position
+        scale -= inset + inset
+
+        if "underCell" not in cell.kwargs:
+            x0, y0 = x-half+inset, y-half+inset         # SW corner
+            rect = patches.Rectangle((x0, y0), scale, scale, \
+                edgecolor=None, facecolor=facecolor)
+            self.ax.add_patch(rect)
+
+        if cell.status("south"):            # south passage
+            x0, y0 = x-half+inset, y-half
+            rect = patches.Rectangle((x0,y0), scale, inset, \
+                edgecolor=None, facecolor=facecolor)
+            self.ax.add_patch(rect)
+
+        if cell.status("east"):             # east passage
+            x0, y0 = x+half-inset, y-half+inset 
+            rect = patches.Rectangle((x0,y0), inset, scale, \
+                edgecolor=None, facecolor=facecolor)
+            self.ax.add_patch(rect)
+
+        if cell.status("north"):            # north passage
+            x0, y0 = x-half+inset, y+half-inset 
+            rect = patches.Rectangle((x0,y0), scale, inset, \
+                edgecolor=None, facecolor=facecolor)
+            self.ax.add_patch(rect)
+
+        if cell.status("west"):             # west passage
+            x0, y0 = x-half, y-half+inset 
+            rect = patches.Rectangle((x0,y0), inset, scale, \
+                edgecolor=None, facecolor=facecolor)
+            self.ax.add_patch(rect)
+
+            # now fill in the walls and passages
+        super().draw_inset_cell(cell, color, inset)
 
     def set_palette_color(self, ID, color):
         """load the color into the palette"""
