@@ -19,6 +19,7 @@
 # Maintenance History:
 #     12 May 2020 - Initial version
 #     27 Jul 2020 - Add draw_inset_cell method
+#     29 Jul 2020 - For undercells, assume inset and only draw passages
 """
 layout_plot.py - basic plotter implementation for rectangular mazes
 Copyright ©2020 by Eric Conrad
@@ -81,7 +82,7 @@ class Layout(object):
             self.draw_polyline([x0, x1], [y0, y1], color)
             x0 = x1 = xx[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
-        else:                           # southward wall
+        elif "underCell" not in cell.kwargs:  # southward wall
             x0, x1 = xx[1], xx[2]
             y0 = y1 = yy[1]
             self.draw_polyline([x0, x1], [y0, y1], color)
@@ -92,7 +93,7 @@ class Layout(object):
             self.draw_polyline([x0, x1], [y0, y1], color)
             y0 = y1 = yy[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
-        else:                           # eastward wall
+        elif "underCell" not in cell.kwargs:  # eastward wall
             y0, y1 = yy[1], yy[2]
             x0 = x1 = xx[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
@@ -103,7 +104,7 @@ class Layout(object):
             self.draw_polyline([x0, x1], [y0, y1], color)
             x0 = x1 = xx[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
-        else:                           # northward wall
+        elif "underCell" not in cell.kwargs:  # northward wall
             x0, x1 = xx[1], xx[2]
             y0 = y1 = yy[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
@@ -114,7 +115,7 @@ class Layout(object):
             self.draw_polyline([x0, x1], [y0, y1], color)
             y0 = y1 = yy[2]
             self.draw_polyline([x0, x1], [y0, y1], color)
-        else:                           # westward wall
+        elif "underCell" not in cell.kwargs:  # westward wall
             y0, y1 = yy[1], yy[2]
             x0 = x1 = xx[1]
             self.draw_polyline([x0, x1], [y0, y1], color)

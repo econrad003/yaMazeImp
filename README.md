@@ -28,9 +28,19 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 ### 2.1 Change log
 
-#### 27 July 2020
+#### 1 August 2020
 
-**Inset Mazes** -- When using *matplotlib* to plot rectangular mazes, the Layout and Color_Layout classes now handle insets.  Method *draw_grid* in *layout_plot.py* directs cells with insets to new method *draw_inset_cell* which has been added to *layout_plot.py* (for walls and passages) and *layout_color.py* (for filling the interior of a cell).  A demonstration program *inset_demo.py* produces a test plot.
+**Weave mazes** -- *weave_cell.py* and *weave_grid.py* add classes of cells and grids to support rectangular weave mazes.  Depth-first search, hunt and kill, and the first-entry Aldous/Broder algorithm all work nicely to generate rectangular mazes with weaves.  The layout routines *layout_plot.py* and *layout_plot_color* produce nice plots.  See also *weave_demo.py*.
+
+**Braiding** -- several programs were added to support dead-end removal (aka braiding). Simple braiding by linking is supported in *grid.py*.  Alternative braiding algorithms are implemented in *braiding.py*.  See also *braid_demo.py*, *sparsify_demo.py*, *straightening_demo.py* and *twisting_demo.py*.
+
+**Kruskal's algorithm** -- Kruskal's maze generation algorithm was implemented, closely following the ruby implementation in the Jamis Buck book.  The algorithm does not itself produce weaves, but works well with randomly preconfigured weaves. See *kruskals.py* and *kruskals_demo.py* for more information.
+
+The *demos* folder has several *png* plots produced by the added demonstration programs.  Documentation of these additions still needs to be added below in this README file.
+
+#### 27 July 2020 ####
+
+**Inset Mazes** -- When using *matplotlib* to plot rectangular mazes, the Layout and Color_Layout classes now handle insets.  Method *draw_grid* in *layout_plot.py* directs cells with insets to new method *draw_inset_cell* which has been added to *layout_plot.py* (for walls and passages) and *layout_plot_color.py* (for filling the interior of a cell).  A demonstration program *inset_demo.py* produces a test plot.
 
 #### 26 July 2020
 
