@@ -244,8 +244,10 @@ class Undercell(Square_Cell):
         row, col = parent.index
         super().__init__(row, col, **kwargs)
         self.index = parent
+        self.configure_undercell(parent)
 
-            # create the tunnel
+    def configure_undercell(self, parent):
+        """create the tunnel and adjust the topology"""
         if parent.is_horizontal_thru():
                 # adjust pointers to the northern neighbor and link
             self["north"] = parent["north"]
@@ -276,5 +278,12 @@ class Undercell(Square_Cell):
     def is_horizontal_thru(self):
         """do we have a horizontal 3-passage"""
         return self["east"] or self["west"]
+
+class Simple_Undercell(Undercell):
+    """underground cell implementation for rectangular weave mazes"""
+
+    def configure_undercell(self, parent):
+        """topology adjustments happen elsewhere"""
+        pass
 
 # END: weave_cell.py

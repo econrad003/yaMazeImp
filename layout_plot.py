@@ -20,6 +20,7 @@
 #     12 May 2020 - Initial version
 #     27 Jul 2020 - Add draw_inset_cell method
 #     29 Jul 2020 - For undercells, assume inset and only draw passages
+#     6 Aug 2020 - In render, change pad_inched to pad_inches
 """
 layout_plot.py - basic plotter implementation for rectangular mazes
 Copyright ©2020 by Eric Conrad
@@ -134,7 +135,7 @@ class Layout(object):
     def render(self, filename, tight=False):
         """render the output"""
         if tight:
-            self.fig.savefig(filename, bbox_inches='tight', pad_inched=0.0)
+            self.fig.savefig(filename, bbox_inches='tight', pad_inches=0.0)
         else:
             self.fig.savefig(filename)
         print('rendered figure to %s' % filename)

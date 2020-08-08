@@ -19,6 +19,7 @@
 # Maintenance History:
 #     31 Jul 2020 - Initial version
 #     1 Aug 2020 - Add code to enable weaving
+#     4 Aug 2020 - Add long tunnels to State class
 """
 kruskals.py - Kruskal's minimum weight spanning tree algorithm
 Copyright ©2020 by Eric Conrad
@@ -119,6 +120,7 @@ class Kruskals:
                 return
 
             assert n < m, "Kruskal Error: merging same color!"
+            # print("Merging components %d and %d" % (n, m))
 
             cell.makePassage(nbr)
 
@@ -193,6 +195,61 @@ class Kruskals:
                     if self.add_weave(cell):
                         added += 1
             return added
+
+        def add_long_tunnel(self, start, direction, length):
+            """attempt to add a long tunnel"""
+            s, undercells, last = \
+                self.grid.add_long_tunnel(start, direction, length)
+            if s:
+                return s        # failure (message)
+
+                # At this point the tunnel is complete.  Two things must
+                # be done:
+                #   1) Update the unvisited edges list
+                #   2) Mark the cells in the tunnel and its entrances
+                #     as connected
+
+                # recover the former grid path
+            oldpath = {}
+            for cell in undercells:
+                    # the undercell index is the parent overcell
+                oldpath[cell.index] = 1
+            oldpath[start] = 1
+            oldpath[last] = 1
+
+                # update the unvisited list
+            new_unvisited = []
+            for edge in self.unvisited:
+                cell, nbr = edge
+                if cell not in oldpath or nbr not in oldpath:
+                    new_unvisited.append(edge)
+            self.unvisited = new_unvisited
+
+                # update the component list
+            color, other = self.colors[start], self.colors[last]
+            if color > other:
+                color, other = other, color
+
+            if color is not other:    # it it is, we've created a circuit
+                for item in self.cells[other]:
+                    self.colors[item] = color
+                    self.cells[color].append(item)
+                del self.cells[other]
+            for undercell in undercells:
+                self.colors[undercell] = color
+                self.cells[color].append(undercell)
+            return s            # success (empty string)
+
+        def force_connection(self, cell, direction):
+            """force a connection in the indicated direction"""
+            nbr = cell[direction]
+            self.merge(cell, nbr)
+                # update the unvisited list
+            new_unvisited = []
+            for edge in self.unvisited:
+                if cell not in edge or nbr not in edge:
+                    new_unvisited.append(edge)
+            self.unvisited = new_unvisited
 
     @classmethod
     def on(cls, grid, state=None):
