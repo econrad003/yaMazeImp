@@ -20,9 +20,10 @@
 ##############################################################################
 # Maintenance History:
 #     31 Jul 2020 - Initial version
+#     9 Aug 2020 - Documentation corrections
 ##############################################################################
 """
-weave_demo.py - demonstrate rectangular weave mazes
+kruskals_demo.py - demonstrate the Kruskal's algorithm implementation
 Copyright ©2020 by Eric Conrad
 License: GNU General Public License version 3 (GNU GPLv3)
 
@@ -160,4 +161,4 @@ if __name__ == "__main__":
     filename = "demos/kruskals-array.png"
     render(mazes, filename)
 
-# END: weave_demo.py
+# END: kruskals_demo.py

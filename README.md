@@ -6,14 +6,13 @@ by Eric Conrad.
 
 * 1 **Description**
 * 2 **Scripts**
-* 2.1 **Revent changes log**
+* 2.1 **Recent changes**
 * 3 **Algorithms**
 * 3.1 **Maze generation**
 * 3.2 **Other algorithms**
 * 4 **Grids and cells**
 * 5 **Layouts**
 * **References**
-* **Change log**
 
 ## 1 Description
 
@@ -21,36 +20,44 @@ This is a collection of maze algorithms and scripts that were implemented primar
 
 ## 2 Scripts
 
-* *make_maze.py* - a script to create rectangular mazes using standard algorithms
+* *make\_maze.py* - a script to create rectangular mazes using standard algorithms
 * *texturizer.py* - a script to create texture matrices using standard algorithms
-* *eval_xxxxx.py* - a collection of scripts to generate a number of mazes using a given algorithm and collect statistics on those mazes
-* *xxxxx_demo.py* - a collection of scripts to demonstrate particular objects, including special kinds of mazes ( for example: polar mazes, sigma mazes, delta mazes, upsilon mazes) or to test features (such as layout programs)
+* *eval\_xxxxx.py* - a collection of scripts to generate a number of mazes using a given algorithm and collect statistics on those mazes
+* *xxxxx\_demo.py* - a collection of scripts to demonstrate particular objects, including special kinds of mazes ( for example: polar mazes, sigma mazes, delta mazes, upsilon mazes) or to test features (such as layout programs)
 
 The scripts *entab.py* and *detab.py* are respectively a script to replace spaces by tabs and a script to replace tabs by spaces.  They have nothing to do with mazes.  I use them because the text editor that I use (Gnome's TextEditor) cannot be configured to use spaces for Python and tabs for some other language.  The space/tab configuration is all or nothing.  Nor can it be configured correctly to do entabbing or detabbing.
 
 ### 2.1 Recent changes
 
-Older changes have been moved to the end, after the references.
+The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
 
-#### Pending - 8 August 2020
+#### 14 August 2020
 
-**Königsberg maze** -- a maze based on Leonhard Euler's Königsberg bridges problem.  The maze uses a template, *input/königsberg.txt* and classes in *weave_grid.py* and *template_grid.py*.  The maze is produced using depth-first search on a subgrid of a large rectangular grid.  One pass of simple braiding is done to insure that the bridges are passable.  Coloring and cell-removal is based on the template file.  See *konigsberg_demo.py* (with no umlaut to insure that the source file name is easily typed) for details.  References [2], [3], [4] and [5] contain details about Euler's problem and its principal generalization.
+**Prim's algorithm** -- Python modules *prims.py* contains an implementation of Prim's algorithm for generating a minimum weight spanning tree from an edge-weighted graph.  (This is the "Truest Prim" algorithm described in the beginning of Chapter 11 of [1], not the similar maze-generation algorithm misleadingly named "True Prim" which uses vertex weights instead of edge weights.) The script *prims\_demo.py* provides a demonstration.
+
+**growing tree algorithms** -- Several algorithms related to Prim's algorithm are collected in the Python modules *edgewise\_growing\_tree.py* and *vertexwise\_growing\_tree.py*.
+
+The edgewise growing tree modules build on the Prims.State class in *prims.py* in order to produce different kinds of spanning trees (i.e. perfect mazes) on connected grids (i.e. connected graphs).  The implemented examples (suggested by exercises in Chapter 11 of [1]) are illustrated in the demonstration script *edge\_growing\_demo.py*.  For comparison purposes, the maze array also includes mazes produced using Prim's algorithm and Kruskal's algorithm.
+
+Module *vertexwise\_growing\_tree.py* contains vertexwise growing tree classes starting with class Vertex\_Prims, my version of algorithm "True Prim" as described and implemented in Chapter 11 of[1].  Nested class Vertex\_Prims.State maintains the algorithms state using a priority queue.  Several subclasses of Vertex\_Prims.State are included as examples of variants.  (The included variations either change the cost function or change the queue discipline.)  Script *vertex\_growing\_demo.py* demonstrates the implemented vertexwise growing tree algorithms.  Prim's algorithm ("Truest Prim" in [1]) is included in the maze output array for purposes of comparison.
+
+**Borůvka's algorithm** -- *boruvkas.py* is an implementation of Borůvka's algorithm to create minimum spanning tree mazes. A demonstration script *boruvkas\_demo.py* outputs a maze.
+
+**recursive division** -- implemented in the Jamis Buck book [1] as a wall adder, it is implemented here (in *recursive\_division.py*) as a passage carver, using a State object in the manner of the implementation of Kruskal's algorithm.  Some subclasses of the recursive division State object are included to illustrate some variations of the algorithm.  The primary demonstration script (*recursive\_division\_demo.py*) gives four examples.  A secondary script (*recursive\_division\_demo5.py*) gives a fifth example and also illustrates calling of the primary script from another script.
+
+**minor bug fixes** including typographical errors, documentation oversights, and markdown issues.
+
+**change log** -- A list of older changes, previously included at the end of *README.md*, has been moved to *CHANGELOG.md*.  A short list of recent changes will continue to remain in *README.md*.
+
+#### 8 August 2020
+
+**Königsberg maze** -- a maze based on Leonhard Euler's Königsberg bridges problem.  The maze uses a template, *input/königsberg.txt* and classes in *weave\_grid.py* and *template\_grid.py*.  The maze is produced using depth-first search on a subgrid of a large rectangular grid.  One pass of simple braiding is done to insure that the bridges are passable.  Coloring and cell-removal is based on the template file.  See *konigsberg\_demo.py* (with no umlaut to insure that the source file name is easily typed) for details.  References [2], [3], [4] and [5] contain details about Euler's problem and its principal generalization.
 
 **long tunnels** -- The Preweave class in *weave.py* can create long tunnels, completing an exercise in Chapter 10 of Buck [1].  These can be preconfigured in a Kruskals.State object (see *kruskals.py*).
 
-**templates for rectangular grids** -- templating to bias maze texture by grid surgery is supported in *grid_template.py*.  In addition to local surgery (removing specific cells or grid edges), some global surgery can be performed.  Global surgery (for the Rectangular Grid class) includes erecting hard walls (with or without doors), creating hard spirals, or, using recursive division with some restrictions, by partitioning the grid into hard rooms.  See the script *template_demo.py* for examples.
+**templates for rectangular grids** -- templating to bias maze texture by grid surgery is supported in *grid\_template.py*.  In addition to local surgery (removing specific cells or grid edges), some global surgery can be performed.  Global surgery (for the Rectangular Grid class) includes erecting hard walls (with or without doors), creating hard spirals, or, using recursive division with some restrictions, by partitioning the grid into hard rooms.  See the script *template\_demo.py* for examples.
 
-**minor bug fixes** -- *layout_plot.py*, *weave_grid.py*
-
-#### 1 August 2020
-
-**Weave mazes** -- *weave_cell.py* and *weave_grid.py* add classes of cells and grids to support rectangular weave mazes.  Depth-first search, hunt and kill, and the first-entry Aldous/Broder algorithm all work nicely to generate rectangular mazes with weaves.  The layout routines *layout_plot.py* and *layout_plot_color* produce nice plots.  See also *weave_demo.py*.
-
-**Braiding** -- several programs were added to support dead-end removal (aka braiding). Simple braiding by linking is supported in *grid.py*.  Alternative braiding algorithms are implemented in *braiding.py*.  See also *braid_demo.py*, *sparsify_demo.py*, *straightening_demo.py* and *twisting_demo.py*.
-
-**Kruskal's algorithm** -- Kruskal's maze generation algorithm was implemented, closely following the ruby implementation in the Jamis Buck book.  The algorithm does not itself produce weaves, but works well with randomly preconfigured weaves. See *kruskals.py* and *kruskals_demo.py* for more information.
-
-The *demos* folder has several *png* plots produced by the added demonstration programs.  Documentation of these additions still needs to be added below in this README file.
+**minor bug fixes** -- *layout\_plot.py*, *weave\_grid.py*
 
 ## 3 Algorithms
 
@@ -58,16 +65,21 @@ The *demos* folder has several *png* plots produced by the added demonstration p
 
 In the descriptions, the terms spanning tree and perfect maze are used interchangeably.  They do really mean exactly the same thing.  They only differ in the underlying context.
 
-* *aldous_broder.py* - implementations of the first-entrance random walk algorithm (Aldous/Broder) and the last-exit random walk algorithm (reverse Aldous/Broder, see [6]) for generating (theoretically) uniformly random spanning trees on a connected simple graph, or equivalently, uniformly random perfect mazes on a connected grid. (The first-entrance algorithm is described in Buck (2015).)  The algorithm tends to start quickly and end slowly, unlike Wilson's algorithm which tends to start slowly and end quickly.
-* *binary_tree.py* - implementation of a simple binary spanning tree algorithm for rectangular mazes.  This is the binary tree algorithm described in Buck (2015).
-* *binary_tree2.py* - implementation of a binary tree algorithm that works most of the time for generating perfect mazes on arbitrary grids.  When it fails, the result is a binary spanning forest. When used on rectangular grids, the result is typically a binary spanning tree which cannot be produced by Jamis Buck's binary tree algorithm.
-* *binary_tree_polar.py* - an adaptation of the simple binary tree algorithm from Buck (2015) for theta (polar) mazes. 
-* *hunt_and_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
+* *aldous\_broder.py* - implementations of the first-entrance random walk algorithm (Aldous/Broder) and the last-exit random walk algorithm (reverse Aldous/Broder, see [6]) for generating (theoretically) uniformly random spanning trees on a connected simple graph, or equivalently, uniformly random perfect mazes on a connected grid. (The first-entrance algorithm is described in Buck (2015).)  The algorithm tends to start quickly and end slowly, unlike Wilson's algorithm which tends to start slowly and end quickly.
+* *binary\_tree.py* - implementation of a simple binary spanning tree algorithm for rectangular mazes.  This is the binary tree algorithm described in Buck (2015).
+* *binary\_tree2.py* - implementation of a binary tree algorithm that works most of the time for generating perfect mazes on arbitrary grids.  When it fails, the result is a binary spanning forest. When used on rectangular grids, the result is typically a binary spanning tree which cannot be produced by Jamis Buck's binary tree algorithm.
+* *boruvkas.py* - Borůvka's algorithm [8] (and see also [7]) is an algorithm to create minimum-weight spanning trees from connected edge-weighted graphs, provided the weight function is injective.  (If the weight function is not one-to-one, the result is a connected spanning subgraph which could contain circuits. \[*N.B.*: This is either a bug or a feature of the algorithm, depending on one's point of view.\])  Python program *boruvkas.py* is an implementation of Borůvka's algorithm for creating mazes. To insure that weights are unique, the default weight function is a random one-to-one map from the grid edges into range \[1,*e*\], where *e* is the number of grid edges.  As with Kruskal's algorithm, edge costs need to be known a priori, so the algorithm does not create weave mazes in a natural way, but like Kruskal's algorithm, the algorithm can be used to extend forests to spanning trees, and thus it is well-suited to mazes with prewoven crossings.
+* *binary\_tree\_polar.py* - an adaptation of the simple binary tree algorithm from Buck (2015) for theta (polar) mazes.
+* *edgewise\_growing_tree.py* - a family of algorithms for creating spanning trees (perfect mazes) on edge-weighted connected graphs (grids) that are similar in form to Prim's algorithm.
+* *hunt\_and\_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
 * *inwinder.py* - an adaptation of the sidewinder algorithm for theta (polar) mazes.
-* *kruskals.py* - an implementation of Kruskal's minimal weight spanning algorithm to create perfect mazes.  The implementation includes some special handling for Preweave mazes to allow for random tunneling and for the creation of long tunnels.  (This implementation closely follows the approaches used in the Jamis Buck book.  See chapters 9 and 10 in [1].)
-* *recursive_backtracker.py* - the unfortunately misnamed depth-first search algorithm for producing perfect mazes in a connected grid.  The implementation is stack-based to avoid recursion.  (See also: *tree_search.py*.)
+* *kruskals.py* - an implementation of Kruskal's minimum weight spanning tree algorithm tocreate perfect mazes.  The implementation includes some special handling for Preweave mazes to allow for random tunneling and for the creation of long tunnels.  (This implementation closely follows the approaches used in the Jamis Buck book.  See chapters 9 and 10 in [1].)
+* *prims.py* - an implementation of Prim's minimum weight spanning tree algorithm to create perfect mazes.  This is the algorithm described in the beginning of Chapter 11 of [1], with implementation left as an exercise ("Truest Prim").
+* *recursive\_backtracker.py* - the unfortunately misnamed depth-first search algorithm for producing perfect mazes in a connected grid.  The implementation is stack-based to avoid explicit recursion.  (See also: *tree\_search.py*.)
+* *recursive\_division.py* - a maze generation algorithm (recursive division) which recursively partitions a grid (in the manner of quicksort) until minimal partitions are obtained. In [1], the algorithm is implemented as a wall adder.  Here it is implemented as a *passage carver* using a State object as in the implementations of Kruskal's algorithm, Prim's algorithm, vertex-Prim's, and Borůvka's algorithm.  The partitions are created in pairs, with a door to connect paired partitions.  Minimal partitions are carved using some other maze algorithm.  The default settings are to create rectangular partitions on a rectangular grid, with minimal partitions being those which are either one cell in width or one cell in height, and to use Sidewinder to carve mazes in the minimal partitions.  The defaults can be reconfigured by creating subclasses of the State object and supplying any necessary methods.  The supplied State classes allow some simple reconfiguration.
 * *sidewinder.py* - a modification of Buck's binary spanning tree algorithm which eliminates one bias in that algorithm.  It only works on rectangular grids or (more generally) on grids which can be traversed in two orthogonal directions.  The resulting spanning trees can be binary, but usually are not.
-* *tree_search.py* -  included are alternative spanning tree search algorithms using a queue (breadth-first search) or a priority-queue (best-first search).  These complement the stack-based depth-first search algorithm used in *recursive-backtracker.py*.
+* *vertexwise\_growing\_tree.py* - a family of algorithms for creating spanning trees (perfect mazes) on vertex-weighted connected graphs (grids) that are superficially similar to Prim's algorithm.  These are all built on an algorithm that, for lack of a better name, I call vertex Prim.  These algorithms are similar to the algorithms "Simple Prim" and "True Prim", and two of the growing tree algorithms that were implemented in Chapter 11 of [1].
+* *tree\_search.py* -  included are alternative spanning tree search algorithms using a queue (breadth-first search) or a priority-queue (best-first search).  These complement the stack-based depth-first search algorithm used in *recursive\_backtracker.py*.
 * *wilson.py* - Wilson's algorithm, a theoretically unbiased spanning tree algorithm that uses a loop-erased random walk of the grid.  In addition, the program includes a hybrid Aldous/Broder/Wilson algorithm that starts the random walk using the first-entrance algorithm of Aldous and Broder and finishes using the loop-erased random walk due to Wilson.  Wilson's algorithm tends to start slowly and end quickly.  The hybrid algorithm tends to start and end quickly, slowing down as it approaches the middle using Aldous/Broder, then speeding up after Wilson's algorithm takes control.  I don't know whether the hybrid algorithm is biased.
 
 ### 3.2 Other Algorithms
@@ -84,19 +96,19 @@ The demonstration script *konigsberg_demo.py* produces a maze based on the Köni
 
 The programs *grid.py* and *cell.py* describe the basic grid and cell classes that underly all mazes and the grids that they span.
 
-* *cylinder_grid* - a modified rectangular grid of square cells in which the east and west edges are identified.
-* *masked_grid.py* - a grid which mirrors part another grid, essentially producing a subgrid.  Actions in the subgrid are mirrored in the parent.
-* *moebius_grid* - a modified rectangular grid of square cells in which the east and west edges are identified with a twist, resulting in a Moebius strip 
-* *ortho_delta_grid.py* - a grid of right triangular cells arranged in a rectangle
-* *ortho_sigma_grid.py* - a grid of regular hexagonal cells arranged in an approximate rectangle, much like a beekeeper's honeycomb
-* *ortho_upsilon_grid.py* - a grid consisting of alternating regular octagonal cells and square cells, arranged in an approximate rectangle
-* *polar_grid.py* - a polar (or theta) grid consisting of concentric circles of cells about the center or pole.  A cell may have an inward neighbor, a clockwise neighbor, a counterclockwise neighbor, and some outward neighbors. The pole may be occupied by a single central cell, or optionally a several pie-shaped wedges forming a circle about the pole.
-* *rectangular_grid.py* - the simple N/S/E/W rectangular grid of square cells
-* *weave_grid.py* - implements two classes:
-  * a Weave subclass of Rectangular_Grid which allows for the creation of short tunnels
-  * a Preweave subclass of Weave, allowing for preconfigured tunnels and long tunnels. Preconfiguration in the Preweave class is probably not compatible with most of the implemented algorithms.  An exception is Kruskal's algorithm, which has been tailored to work well with the Preweave class.
+* *cylinder\_grid* - a modified rectangular grid of square cells in which the east and west edges are identified.
+* *masked\_grid.py* - a grid which mirrors part another grid, essentially producing a subgrid.  Actions in the subgrid are mirrored in the parent.
+* *moebius\_grid* - a modified rectangular grid of square cells in which the east and west edges are identified with a twist, resulting in a Moebius strip 
+* *ortho\_delta\_grid.py* - a grid of right triangular cells arranged in a rectangle
+* *ortho\_sigma\_grid.py* - a grid of regular hexagonal cells arranged in an approximate rectangle, much like a beekeeper's honeycomb
+* *ortho\_upsilon\_grid.py* - a grid consisting of alternating regular octagonal cells and square cells, arranged in an approximate rectangle
+* *polar\_grid.py* - a polar (or theta) grid consisting of concentric circles of cells about the center or pole.  A cell may have an inward neighbor, a clockwise neighbor, a counterclockwise neighbor, and some outward neighbors. The pole may be occupied by a single central cell, or optionally a several pie-shaped wedges forming a circle about the pole.
+* *rectangular\_grid.py* - the simple N/S/E/W rectangular grid of square cells
+* *weave\_grid.py* - implements two classes:
+  + a Weave subclass of Rectangular_Grid which allows for the creation of short tunnels
+  + a Preweave subclass of Weave, allowing for preconfigured tunnels and long tunnels. Preconfiguration in the Preweave class is probably not compatible with most of the implemented algorithms.  An exception is Kruskal's algorithm, which has been tailored to work well with the Preweave class.
 
-The function of the various cell programs should be mostly self-explanatory.  Much of the actual work is done in the grid programs and in the layout programs.  ASCII and unicode layout are handled in *rectangular_grid.py*.
+The function of the various cell programs should be mostly self-explanatory.  Much of the actual work is done in the grid programs and in the layout programs.  ASCII and unicode layout are handled in *rectangular\_grid.py*.
 
 ### 5 Layouts
 
@@ -115,35 +127,16 @@ Most derived grids support plot layouts using MatPlotLib, though in most cases, 
 4. "Eulerian path". *Wikipedia*, 5 Aug. 2020. Web, accessed 8 Aug. 2020.
 [Wikipedia: https://en.wikipedia.org/wiki/Eulerian_path](https://en.wikipedia.org/wiki/Eulerian_path)
 
-5. "Seven Bridges of Königsberg". *Wikipedia*, 6 Jun. 2020. Web, accessed 8 Aug. 2020.
+5. "Seven bridges of Königsberg". *Wikipedia*, 6 Jun. 2020. Web, accessed 8 Aug. 2020.
 [Wikipedia: https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg)
 
-6. Yiping Hu, Russell Lyons and Pengfei Tang.  "A reverse Aldous/Broder algorithm."  Preprint.  Web: arXiv.org.  24 Jul 2019.
+6. Yiping Hu, Russell Lyons and Pengfei Tang.  "A reverse Aldous/Broder algorithm".  Preprint.  Web: arXiv.org.  24 Jul 2019.
 [Arxiv.org: http://arxiv.org/abs/1907.10196v1](http://arxiv.org/abs/1907.10196v1)
 
-## Change Log
+7. Bernard Chazelle. "A minimum spanning tree algorithm with inverse-Ackermann type complexity". *J ACM* **47** (2000), 1028-1047.
+[Preprint: https://www.cs.princeton.edu/~chazelle/pubs/mst.pdf](https://www.cs.princeton.edu/~chazelle/pubs/mst.pdf)
 
-Some recent changes are currently listed above in Section 2.1.  Older changes are listed here, in reverse chronological order.
+8. "Borůvka's algorithm". *Wikipedia*. 10 Jun. 2020. Web, accessed 12 Aug. 2020.
+[Wikipedia: https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm](https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm)
 
-#### 27 July 2020 ####
-
-**Inset Mazes** -- When using *matplotlib* to plot rectangular mazes, the Layout and Color_Layout classes now handle insets.  Method *draw_grid* in *layout_plot.py* directs cells with insets to new method *draw_inset_cell* which has been added to *layout_plot.py* (for walls and passages) and *layout_plot_color.py* (for filling the interior of a cell).  A demonstration program *inset_demo.py* produces a test plot.
-
-#### 26 July 2020
-
-**Braid Mazes** -- Braiding or dead end removal is one way of transforming mazes.  The Grid class handles braiding using two new methods in *grid.py*.  A demonstration script (*braid_demo.py*) shows how with two exxamples.  The result (*demos/braid-arry.png*) is in the *demos* directory.
-
-#### 25 July 2020
-
-**Theta Mazes** -- Minor tweaking of code, some in reponse to pylint3 warnings  Also, descriptive titles were added to the demos.  In addition, I've added a version of the basic E-N binary tree algorithm for theta mazes.  This one proceeds through a theta (polar) grid in a CCW-inward manner.  As in inwinder (the theta version of sidewinder), each latitude requires a hard counterclockwise boundary.  See *binary_tree_polar.py* and *polar_binary_demo.py* for details.  Also, four demos will be updated with titles and two (for the polar binary trees) will be added in short order.
-
-#### 14 July 2020 (Bastille Day)
-
-**Theta Mazes** -- Added the script *polar_demo.py* to create polar mazes (also known as theta mazes).  The associated python programs are *polar_cell.py* (to manage cells), *polar_grid.py* (to manage the associated grids), and *layout_plot_polar.py* (to handle displaying the maze using *matplotlib*).
-
-The layout displays cells as polygons instead of circular bars because the managing circular bars would require using superimposed axes, specifically polar coordinates for flood-filling the circular bars and rectangular coordinates for drawing boundary arcs. Jamis Buck uses essentially the same polygon scheme with his *ruby* *chunky_png* layout of theta mazes.  Two kinds of mazes can be produced -- one kind having a single cell at the pole, and the other with several wedge cells that all circle about the pole.  A cell's neighbors are inward, clockwise, counterclockwise, and outward.  A cell may have more than one outward neighbor.
-
-Two demonstration files were added in the *demos* directory: *demos/polar1.png* and *demos/polar2.png*.  These were produced by running *polar_demo.py*. They are the results of applying the first-entry Aldous-Broder algorithm to both kinds of polar grid.
-
-
-
+ 

@@ -3,11 +3,7 @@ To-do list
 Section 1) New programs
 
 * maze algorithms
-  * Kruskal's algorithm
-  * Prim's algorithm
   * Eller's algorithm
-  * depth-first search (recursive backtracker)
-  * hunt and kill
   * recursive division
   *
 
@@ -22,17 +18,15 @@ Section 1) New programs
 
 * testing
   * demo programs for each algorithm
-  * demo programs for each nonstandard grid (need matplotlib rendering)
   * collect statistics for algorithms (Ortho_Evaluator class)
   *
 
 * layout and rendering engines
-  * matplotlib
   * inform7
   * load/save
   *
 
-Section 3) Existing programs
+Section 2) Existing programs
 
 * grid topology
   * Moebius strip/cylinder
@@ -43,7 +37,5 @@ Section 3) Existing programs
 * layout and rendering engines
   * graphViz/dot - add edge labels
   *
-
-
 
 

@@ -20,6 +20,7 @@
 #     31 Jul 2020 - Initial version
 #     1 Aug 2020 - Add code to enable weaving
 #     4 Aug 2020 - Add long tunnels to State class
+#     9 Aug 2020 - Add historical information to documentation.
 """
 kruskals.py - Kruskal's minimum weight spanning tree algorithm
 Copyright ©2020 by Eric Conrad
@@ -49,7 +50,17 @@ Kruskal's Algorithm:
     the spanning tree (in which case the algorithm succeeds) or all
     edges have been visited (in which case G is not connected and we
     have a spanning forest consisting of minimum weight spanning trees
-    in each component of G)
+    in each component of G).
+
+    Since the algorithm identifies all edges before any edges are
+    added, it cannot produce weaves in woven grids.  The method
+    Kruskals.State.add_weave can produce preweaves in a manner
+    that is consistent with the algorithm.
+
+Background:
+
+    Kruskal's algorithm was developed by mathematician and scientist
+    Joseph Kruskal in 1956. [1, page 158]
 
 Prerequisites:
 
