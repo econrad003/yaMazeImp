@@ -21,6 +21,7 @@
 #     1 Aug 2020 - Add code to enable weaving
 #     4 Aug 2020 - Add long tunnels to State class
 #     9 Aug 2020 - Add historical information to documentation.
+#     21 Aug 2020 - Document a bug (Bug [A]) for a later fix
 """
 kruskals.py - Kruskal's minimum weight spanning tree algorithm
 Copyright ©2020 by Eric Conrad
@@ -75,9 +76,15 @@ References:
 Bugs:
 
     See discussion above.
+
+    Bug [#7] If there is a grid connection other than "north", "south",
+    "east" or "west", it will be deleted in method State.add_weave().
+    This can cause the algorithm to fail to find a spanning tree.
 """
 
 from random import random, shuffle, randint
+import itertools
+flatten = itertools.chain.from_iterable   # flatten 2d array
 
 class Kruskals:
     """implementation of Kruskal's algorithms"""
@@ -90,6 +97,7 @@ class Kruskals:
             self.grid = grid
             self.crossings = crossings if crossings \
                 else [["north", "south"], ["east", "west"]]
+            self.directions = list(flatten(self.crossings))
 
             n = 0
             self.colors = {}
@@ -121,7 +129,7 @@ class Kruskals:
 
             if nbr not in self.colors:        # nbr is an undercell
                 self.colors[nbr] = n
-                cell.makePassage(nbr)
+                self.cells[n].append(nbr)
                 return
 
             m = self.colors[nbr]
@@ -162,16 +170,37 @@ class Kruskals:
                 # okay for weave
             return True
 
-        def add_weave(self, cell):
+        def add_weave(self, cell, subgrid=None):
             """add a weave crossing before running the algorithm"""
             if not self.ok_for_weave(cell):
                 return False
 
+            if not subgrid:
+                subgrid = self.grid
+
                 # mark the cell's grid edges as visited
+                #
+                # Bug [#7] Grid connections other than "north",
+                #   "south", "east" or "west" should not be
+                #   deleted
             new_unvisited = []
             for edge in self.unvisited:
                 if cell not in edge:
-                    new_unvisited.append(edge)
+                    new_unvisited.append(edge)  # keep this edge
+                    continue
+                #
+                # Bug [#7] additional code required here!
+                # The added code throws away the edge if the
+                # (cell, nbr) pair is one of the two crossings
+                # and keeps the edge otherwise.
+                #
+                u, v = edge                 # unpack edge
+                if u is cell:               # one of the nodes is cell
+                    u = v                   # now u is the other node
+                for direction in self.directions:
+                    if u is cell[direction]:
+                        continue            # throw away this edge
+                new_unvisited.append(edge)  # keep this edge
             self.unvisited = new_unvisited
 
                 # pick direction of weave
@@ -187,7 +216,7 @@ class Kruskals:
 
             downcell = cell[down]
             upcell = cell[up]
-            self.grid.tunnel_under(cell)
+            subgrid.tunnel_under(cell)
             undercell = upcell[down]
             self.merge(downcell, undercell)
             self.merge(upcell, undercell)

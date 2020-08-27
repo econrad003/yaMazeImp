@@ -31,6 +31,14 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
 
+#### 26 August 2020
+
+**Multilevel mazes** -- A simple multilevel rectangular maze with stairwells, and optionally with weaves, is implemented in *multilevel\_grid.py*.  Basic plotting is largely handled by *layout\_plot\_multilevel.py*, but like the other *matplotlib* layouts, any variation typically requires special *matplotlib* code.  State subclasses for use with Kruskal's algorithm and Borůvka's algorithm are provided in *multilevel\_mst.py*.  Both these state subclasses provide for preconfigured weaving.  (A state subclass for use with Prim's algorithm will be provided later.  Watch this space!)
+
+**Bug #7** -- Fixed! -- A potential bug was discovered in the implementation of preweaving in conjunction with Kruskal's algorithm.  Affected would be preweaves when there are grid connections other than the weave connections (default north/south and east/west).  An example is the up/down stairwell connection in a multilevel maze.  The bug is labelled "potential" as it does not affect rectangular weave mazes and, prior to this release, these were the only supported weave mazes.
+
+**still needed** -- multilevel maze state classes for use with Prim's algorithm and with growing tree algorithms; a Königsberg bridges demonstration maze built as a multilevel maze.
+
 #### 14 August 2020
 
 **Prim's algorithm** -- Python modules *prims.py* contains an implementation of Prim's algorithm for generating a minimum weight spanning tree from an edge-weighted graph.  (This is the "Truest Prim" algorithm described in the beginning of Chapter 11 of [1], not the similar maze-generation algorithm misleadingly named "True Prim" which uses vertex weights instead of edge weights.) The script *prims\_demo.py* provides a demonstration.
@@ -49,16 +57,6 @@ Module *vertexwise\_growing\_tree.py* contains vertexwise growing tree classes s
 
 **change log** -- A list of older changes, previously included at the end of *README.md*, has been moved to *CHANGELOG.md*.  A short list of recent changes will continue to remain in *README.md*.
 
-#### 8 August 2020
-
-**Königsberg maze** -- a maze based on Leonhard Euler's Königsberg bridges problem.  The maze uses a template, *input/königsberg.txt* and classes in *weave\_grid.py* and *template\_grid.py*.  The maze is produced using depth-first search on a subgrid of a large rectangular grid.  One pass of simple braiding is done to insure that the bridges are passable.  Coloring and cell-removal is based on the template file.  See *konigsberg\_demo.py* (with no umlaut to insure that the source file name is easily typed) for details.  References [2], [3], [4] and [5] contain details about Euler's problem and its principal generalization.
-
-**long tunnels** -- The Preweave class in *weave.py* can create long tunnels, completing an exercise in Chapter 10 of Buck [1].  These can be preconfigured in a Kruskals.State object (see *kruskals.py*).
-
-**templates for rectangular grids** -- templating to bias maze texture by grid surgery is supported in *grid\_template.py*.  In addition to local surgery (removing specific cells or grid edges), some global surgery can be performed.  Global surgery (for the Rectangular Grid class) includes erecting hard walls (with or without doors), creating hard spirals, or, using recursive division with some restrictions, by partitioning the grid into hard rooms.  See the script *template\_demo.py* for examples.
-
-**minor bug fixes** -- *layout\_plot.py*, *weave\_grid.py*
-
 ## 3 Algorithms
 
 ### 3.1 Maze Generation
@@ -74,6 +72,7 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
 * *hunt\_and\_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
 * *inwinder.py* - an adaptation of the sidewinder algorithm for theta (polar) mazes.
 * *kruskals.py* - an implementation of Kruskal's minimum weight spanning tree algorithm tocreate perfect mazes.  The implementation includes some special handling for Preweave mazes to allow for random tunneling and for the creation of long tunnels.  (This implementation closely follows the approaches used in the Jamis Buck book.  See chapters 9 and 10 in [1].)
+* *multilevel\_mst.py* - state classes for prewoven multilevel mazes, to be used with Kruskal's algorithm and with Borůvka's algorithm.  (A state class for use with Prim's algorithm should be available in the near future.)
 * *prims.py* - an implementation of Prim's minimum weight spanning tree algorithm to create perfect mazes.  This is the algorithm described in the beginning of Chapter 11 of [1], with implementation left as an exercise ("Truest Prim").
 * *recursive\_backtracker.py* - the unfortunately misnamed depth-first search algorithm for producing perfect mazes in a connected grid.  The implementation is stack-based to avoid explicit recursion.  (See also: *tree\_search.py*.)
 * *recursive\_division.py* - a maze generation algorithm (recursive division) which recursively partitions a grid (in the manner of quicksort) until minimal partitions are obtained. In [1], the algorithm is implemented as a wall adder.  Here it is implemented as a *passage carver* using a State object as in the implementations of Kruskal's algorithm, Prim's algorithm, vertex-Prim's, and Borůvka's algorithm.  The partitions are created in pairs, with a door to connect paired partitions.  Minimal partitions are carved using some other maze algorithm.  The default settings are to create rectangular partitions on a rectangular grid, with minimal partitions being those which are either one cell in width or one cell in height, and to use Sidewinder to carve mazes in the minimal partitions.  The defaults can be reconfigured by creating subclasses of the State object and supplying any necessary methods.  The supplied State classes allow some simple reconfiguration.
@@ -98,7 +97,8 @@ The programs *grid.py* and *cell.py* describe the basic grid and cell classes th
 
 * *cylinder\_grid* - a modified rectangular grid of square cells in which the east and west edges are identified.
 * *masked\_grid.py* - a grid which mirrors part another grid, essentially producing a subgrid.  Actions in the subgrid are mirrored in the parent.
-* *moebius\_grid* - a modified rectangular grid of square cells in which the east and west edges are identified with a twist, resulting in a Moebius strip 
+* *moebius\_grid* - a modified rectangular grid of square cells in which the east and west edges are identified with a twist, resulting in a Moebius strip
+* *multilevel\_grid.py* - a simple multilevel rectangular grid, with optional weaving.  Levels are connected by stairwells.
 * *ortho\_delta\_grid.py* - a grid of right triangular cells arranged in a rectangle
 * *ortho\_sigma\_grid.py* - a grid of regular hexagonal cells arranged in an approximate rectangle, much like a beekeeper's honeycomb
 * *ortho\_upsilon\_grid.py* - a grid consisting of alternating regular octagonal cells and square cells, arranged in an approximate rectangle
@@ -112,7 +112,7 @@ The function of the various cell programs should be mostly self-explanatory.  Mu
 
 ### 5 Layouts
 
-Four types of layouts are supported.  ASCII and unicode layouts are supported on rectangular grids and on some grids derived from rectangular grids (for example, cylinder grids).  All grids support GraphViz/dot layout, though the results usually leave a lot to be desired.
+Several types of layouts are supported.  ASCII and unicode layouts are supported on rectangular grids and on some grids derived from rectangular grids (for example, cylinder grids).  All grids support GraphViz/dot layout, though the results usually leave a lot to be desired.
 
 Most derived grids support plot layouts using MatPlotLib, though in most cases, support will require some direct use of MatPlotLib methods.  See the scripts for examples.
 

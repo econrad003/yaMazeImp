@@ -18,6 +18,8 @@
 #
 # Maintenance History:
 #     11 Aug 2020 - Initial version
+#     22 Aug 2020 - Make 'subgrid' an optional parmeter for method
+#       add_weave() (default: self.grid) and use this for tunnelling
 """
 boruvkas.py - Borůvka's minimum weight spanning tree algorithm
 Copyright ©2020 by Eric Conrad
@@ -203,10 +205,13 @@ class Boruvkas:
 
                 # 2) add_weave: adapted
 
-        def add_weave(self, cell):
+        def add_weave(self, cell, subgrid=None):
             """add a weave crossing before running the algorithm"""
             if not self.ok_for_weave(cell):
                 return False
+
+            if not subgrid:               # 22 Aug 2020
+                subgrid = self.grid
 
                 # pick direction of weave
                 #   up, down for undercell
@@ -227,7 +232,7 @@ class Boruvkas:
                 # create the passages
             cell.makePassage(leftcell)
             cell.makePassage(rightcell)
-            self.grid.tunnel_under(cell)    # Preweave.State method
+            subgrid.tunnel_under(cell)  # 22 Aug 2020 - Preweave method
             undercell = upcell[down]
             upcell.makePassage(undercell)
             downcell.makePassage(undercell)

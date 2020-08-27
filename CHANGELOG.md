@@ -2,6 +2,16 @@
 
 Recent changes are found in file *README.md*.  This file contains a list of older changes going back to 14 July 2020.  This list is in reverse chronological order.
 
+#### 8 August 2020
+
+**Königsberg maze** -- a maze based on Leonhard Euler's Königsberg bridges problem.  The maze uses a template, *input/königsberg.txt* and classes in *weave\_grid.py* and *template\_grid.py*.  The maze is produced using depth-first search on a subgrid of a large rectangular grid.  One pass of simple braiding is done to insure that the bridges are passable.  Coloring and cell-removal is based on the template file.  See *konigsberg\_demo.py* (with no umlaut to insure that the source file name is easily typed) for details.  References [2], [3], [4] and [5] (see README.md) contain details about Euler's problem and its principal generalization.
+
+**long tunnels** -- The Preweave class in *weave.py* can create long tunnels, completing an exercise in Chapter 10 of Buck [1].  These can be preconfigured in a Kruskals.State object (see *kruskals.py*).
+
+**templates for rectangular grids** -- templating to bias maze texture by grid surgery is supported in *grid\_template.py*.  In addition to local surgery (removing specific cells or grid edges), some global surgery can be performed.  Global surgery (for the Rectangular Grid class) includes erecting hard walls (with or without doors), creating hard spirals, or, using recursive division with some restrictions, by partitioning the grid into hard rooms.  See the script *template\_demo.py* for examples.
+
+**minor bug fixes** -- *layout\_plot.py*, *weave\_grid.py*
+
 ## 1 August 2020
 
 * **Weave mazes** -- *weave\_cell.py* and *weave\_grid.py* add classes of cells and grids to support rectangular weave mazes.  Depth-first search, hunt and kill, and the first-entry Aldous/Broder algorithm all work nicely to generate rectangular mazes with weaves.  The layout routines *layout\_plot.py* and *layout\_plot_color* produce nice plots.  See also *weave\_demo.py*.
