@@ -2,6 +2,24 @@
 
 Recent changes are found in file *README.md*.  This file contains a list of older changes going back to 14 July 2020.  This list is in reverse chronological order.
 
+#### 14 August 2020
+
+**Prim's algorithm** -- Python modules *prims.py* contains an implementation of Prim's algorithm for generating a minimum weight spanning tree from an edge-weighted graph.  (This is the "Truest Prim" algorithm described in the beginning of Chapter 11 of [1], not the similar maze-generation algorithm misleadingly named "True Prim" which uses vertex weights instead of edge weights.) The script *prims\_demo.py* provides a demonstration.
+
+**growing tree algorithms** -- Several algorithms related to Prim's algorithm are collected in the Python modules *edgewise\_growing\_tree.py* and *vertexwise\_growing\_tree.py*.
+
+The edgewise growing tree modules build on the Prims.State class in *prims.py* in order to produce different kinds of spanning trees (i.e. perfect mazes) on connected grids (i.e. connected graphs).  The implemented examples (suggested by exercises in Chapter 11 of [1]) are illustrated in the demonstration script *edge\_growing\_demo.py*.  For comparison purposes, the maze array also includes mazes produced using Prim's algorithm and Kruskal's algorithm.
+
+Module *vertexwise\_growing\_tree.py* contains vertexwise growing tree classes starting with class Vertex\_Prims, my version of algorithm "True Prim" as described and implemented in Chapter 11 of[1].  Nested class Vertex\_Prims.State maintains the algorithms state using a priority queue.  Several subclasses of Vertex\_Prims.State are included as examples of variants.  (The included variations either change the cost function or change the queue discipline.)  Script *vertex\_growing\_demo.py* demonstrates the implemented vertexwise growing tree algorithms.  Prim's algorithm ("Truest Prim" in [1]) is included in the maze output array for purposes of comparison.
+
+**Borůvka's algorithm** -- *boruvkas.py* is an implementation of Borůvka's algorithm to create minimum spanning tree mazes. A demonstration script *boruvkas\_demo.py* outputs a maze.
+
+**recursive division** -- implemented in the Jamis Buck book [1] as a wall adder, it is implemented here (in *recursive\_division.py*) as a passage carver, using a State object in the manner of the implementation of Kruskal's algorithm.  Some subclasses of the recursive division State object are included to illustrate some variations of the algorithm.  The primary demonstration script (*recursive\_division\_demo.py*) gives four examples.  A secondary script (*recursive\_division\_demo5.py*) gives a fifth example and also illustrates calling of the primary script from another script.
+
+**minor bug fixes** including typographical errors, documentation oversights, and markdown issues.
+
+**change log** -- A list of older changes, previously included at the end of *README.md*, has been moved to *CHANGELOG.md*.  A short list of recent changes will continue to remain in *README.md*.
+
 #### 8 August 2020
 
 **Königsberg maze** -- a maze based on Leonhard Euler's Königsberg bridges problem.  The maze uses a template, *input/königsberg.txt* and classes in *weave\_grid.py* and *template\_grid.py*.  The maze is produced using depth-first search on a subgrid of a large rectangular grid.  One pass of simple braiding is done to insure that the bridges are passable.  Coloring and cell-removal is based on the template file.  See *konigsberg\_demo.py* (with no umlaut to insure that the source file name is easily typed) for details.  References [2], [3], [4] and [5] (see README.md) contain details about Euler's problem and its principal generalization.
