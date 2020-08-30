@@ -31,6 +31,12 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
 
+#### 29 August 2020
+
+**Prim's algorithm and multilevel mazes** -- This change turned out to be easy.  Since Prim's  algorithm already works naturally with weave mazes, no teaking was needed for the Prims.State class. The only thing that was needed was to incorporate the algorithm into a demonstration script.  My choice here was *prims_demo.py*.  I incorporated *argparse* into the script to support command line arguments and added machinery to support multilevel weave mazes.  (I also cleaned up some of the documentation in the script.)
+
+Note: This is stage two of the enhancement issue #5. Still needed: growing tree algorithms applied to multilevel mazes. 
+
 #### 28 August 2020
 
 **Eller's algorithm** -- My implementation of Eller's algorithm, in *ellers.py*, uses a state matrix in the manner of those used in the implementation of Kruskal's algorithm, and is suitable for use with rectangular grids.  A modified state matrix for polar grids is implemented in *polar_ellers.py*.  Demonstration scripts *ellers_demo.py* and *polar_ellers.py* can be used for testing the implementations and for producing rectangular and polar mazes with Eller's algorithm.  
