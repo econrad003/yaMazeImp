@@ -2,6 +2,18 @@
 
 Recent changes are found in file *README.md*.  This file contains a list of older changes going back to 14 July 2020.  This list is in reverse chronological order.
 
+#### 28 August 2020
+
+**Eller's algorithm** -- My implementation of Eller's algorithm, in *ellers.py*, uses a state matrix in the manner of those used in the implementation of Kruskal's algorithm, and is suitable for use with rectangular grids.  A modified state matrix for polar grids is implemented in *polar_ellers.py*.  Demonstration scripts *ellers_demo.py* and *polar_ellers.py* can be used for testing the implementations and for producing rectangular and polar mazes with Eller's algorithm.  
+
+#### 26 August 2020
+
+**Multilevel mazes** -- A simple multilevel rectangular maze with stairwells, and optionally with weaves, is implemented in *multilevel\_grid.py*.  Basic plotting is largely handled by *layout\_plot\_multilevel.py*, but like the other *matplotlib* layouts, any variation typically requires special *matplotlib* code.  State subclasses for use with Kruskal's algorithm and Borůvka's algorithm are provided in *multilevel\_mst.py*.  Both these state subclasses provide for preconfigured weaving.  (A state subclass for use with Prim's algorithm will be provided later.  Watch this space!)
+
+**Bug #7** -- Fixed! -- A potential bug was discovered in the implementation of preweaving in conjunction with Kruskal's algorithm.  Affected would be preweaves when there are grid connections other than the weave connections (default north/south and east/west).  An example is the up/down stairwell connection in a multilevel maze.  The bug is labelled "potential" as it does not affect rectangular weave mazes and, prior to this release, these were the only supported weave mazes.
+
+**still needed** -- multilevel maze state classes for use with Prim's algorithm and with growing tree algorithms; a Königsberg bridges demonstration maze built as a multilevel maze.
+
 #### 14 August 2020
 
 **Prim's algorithm** -- Python modules *prims.py* contains an implementation of Prim's algorithm for generating a minimum weight spanning tree from an edge-weighted graph.  (This is the "Truest Prim" algorithm described in the beginning of Chapter 11 of [1], not the similar maze-generation algorithm misleadingly named "True Prim" which uses vertex weights instead of edge weights.) The script *prims\_demo.py* provides a demonstration.

@@ -31,23 +31,20 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
 
+#### 4 September 2020
+
+**Complete maze** -- mainly for testing purposes -- this carves a complete maze on a grid, that is a maze with an arc for every grid connection.
+
+**High card wins algorithm** -- A generalization of the Binary Tree algorithm (Buck [1], Chapter 1) and the Ternary (aka Trinary) Tree algorithm (Buck [1], Chapter 12).  This is
+implemented in *high\_card\_wins.py*.  The implementation is similar in flavour to the Kruskal's algorithm implementation in *kruskals.py* in that it uses a state matrix (closing issue #9).  The demonstration script *high\_card\_demo.py* contains two demonstrations of the algorithm, the first essentially random, and the other a binary tree instantiation.
+
+**3-dimensional oblong grid** -- A simple rectangular 3-D grid or, more precisely, rectangular parallelopiped lattice.  Cell: *cell3d.py*; grid: *grid3d.py*, simple matplotlib layout: *layout\_plot3d.py*, demo using ternary tree algorithm: *grid3d\_demo.py*.
+
 #### 29 August 2020
 
 **Prim's algorithm and multilevel mazes** -- This change turned out to be easy.  Since Prim's  algorithm already works naturally with weave mazes, no teaking was needed for the Prims.State class. The only thing that was needed was to incorporate the algorithm into a demonstration script.  My choice here was *prims_demo.py*.  I incorporated *argparse* into the script to support command line arguments and added machinery to support multilevel weave mazes.  (I also cleaned up some of the documentation in the script.)
 
 Note: This is stage two of the enhancement issue #5. Still needed: growing tree algorithms applied to multilevel mazes. 
-
-#### 28 August 2020
-
-**Eller's algorithm** -- My implementation of Eller's algorithm, in *ellers.py*, uses a state matrix in the manner of those used in the implementation of Kruskal's algorithm, and is suitable for use with rectangular grids.  A modified state matrix for polar grids is implemented in *polar_ellers.py*.  Demonstration scripts *ellers_demo.py* and *polar_ellers.py* can be used for testing the implementations and for producing rectangular and polar mazes with Eller's algorithm.  
-
-#### 26 August 2020
-
-**Multilevel mazes** -- A simple multilevel rectangular maze with stairwells, and optionally with weaves, is implemented in *multilevel\_grid.py*.  Basic plotting is largely handled by *layout\_plot\_multilevel.py*, but like the other *matplotlib* layouts, any variation typically requires special *matplotlib* code.  State subclasses for use with Kruskal's algorithm and Borůvka's algorithm are provided in *multilevel\_mst.py*.  Both these state subclasses provide for preconfigured weaving.  (A state subclass for use with Prim's algorithm will be provided later.  Watch this space!)
-
-**Bug #7** -- Fixed! -- A potential bug was discovered in the implementation of preweaving in conjunction with Kruskal's algorithm.  Affected would be preweaves when there are grid connections other than the weave connections (default north/south and east/west).  An example is the up/down stairwell connection in a multilevel maze.  The bug is labelled "potential" as it does not affect rectangular weave mazes and, prior to this release, these were the only supported weave mazes.
-
-**still needed** -- multilevel maze state classes for use with Prim's algorithm and with growing tree algorithms; a Königsberg bridges demonstration maze built as a multilevel maze.
 
 ## 3 Algorithms
 
@@ -63,6 +60,7 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
 * *edgewise\_growing_tree.py* - a family of algorithms for creating spanning trees (perfect mazes) on edge-weighted connected graphs (grids) that are similar in form to Prim's algorithm.
 * *hunt\_and\_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
 * *ellers.py* - an implementation of Eller's algorithm as described in Chapter 12 of the Jamis Buck book [1].  The algorithm is suitable as implemented for rectangular grids using "north" and "east" row and column grid connections.  In *polar_ellers.py*, there is an adaptation of the state matrix that uses the "inward" and "ccw" grid connections -- this variant make the Eller's algorithm implementation work with polar maze.
+* *high\_card\_wins.py* - a generalization of the binary tree algorithm described in Chapter 1 of Buck [1].  This also includes the ternary tree algorithm described in Chapter 12 as another special case. (Note: It is called the 'Trinary Tree' algorithm on page 219.)  The basic idea of the algorithm is that players, representing grid directions, go from cell to cell.  At each cell any players who won't create a circuit are dealt a card. The player who has the high card makes the maze connection.  The game continues until the maze is connected.
 * *inwinder.py* - an adaptation of the sidewinder algorithm for theta (polar) mazes.
 * *kruskals.py* - an implementation of Kruskal's minimum weight spanning tree algorithm tocreate perfect mazes.  The implementation includes some special handling for Preweave mazes to allow for random tunneling and for the creation of long tunnels.  (This implementation closely follows the approaches used in the Jamis Buck book.  See chapters 9 and 10 in [1].)
 * *multilevel\_mst.py* - state classes for prewoven multilevel mazes, to be used with Kruskal's algorithm and with Borůvka's algorithm.  (A state class for use with Prim's algorithm should be available in the near future.)
