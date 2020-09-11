@@ -18,6 +18,7 @@
 #
 # Maintenance History:
 #     1 Sep 2020 - Initial version
+#     4 Sep 2020 - Add save to configuration (.ini)
 """
 grid3d.py - three-dimensional oblong grid and maze implementation
 Copyright ©2020 by Eric Conrad
@@ -41,6 +42,7 @@ Bugs:
     Unknown.
 """
 
+import configparser
 from cell3d import Cell3D
 from grid import Grid
 
@@ -238,7 +240,68 @@ class Grid3D(Grid):
             # display of mazes
 
     # (1) convert to ini configuration
-
+    #     (implemented here)
     # (2) use ini configuration to produce inform-7 code
+    #     (implemented elsewhere)
+
+    def config_header(self):
+        """capture header information"""
+        self.config["maze"] = { \
+            "type" : self.__class__.__name__, \
+            "name" : self.name, \
+            "rows" : str(self.rows), \
+            "cols" : str(self.cols),
+            "height" : str(self.height) \
+        }
+
+    def config_level(self, i, name=None):
+        """capture level information"""
+        level = self.levels[i]
+        if not name:
+            name = str(level)
+        self.config["level:" + str(i)] = { \
+            "plane" : str(level), \
+            "name" : name \
+        }
+        return level
+
+    def config_cell(self, cell, name=None):
+        """extract cell information"""
+        i, j, k, rest = self.from_cell(cell)
+        level = [k] + rest
+        if not name:
+            name = str(cell.index)
+        key = "cell:" + str(cell.index)
+        self.config[key] = { \
+            "index" : str(cell.index), \
+            "name" : name, \
+            "level" : str(level) \
+        }
+        for direction in cell.topology:
+            nbr = cell[direction]
+            self.config[key][direction] = str(nbr.index)
+            if cell.have_passage(nbr):
+                self.config[key]["arc_" + direction] = "True"
+        return key, level
+
+    def create_config(self):
+        """create a configuration from the current maze state"""
+        self.config = configparser.ConfigParser()
+        self.config_header()
+        for i in range(len(self.levels)):
+            self.config_level(i)
+        for cell in self.each():
+            self.config_cell(cell)
+        return self.config
+
+    def save_config(self, filename, create=True):
+        """save configuration to an ini file"""
+        if create:
+            self.create_config()
+        with open(filename, 'w') as config_file:
+            config_file.write("# maze configuration\n" \
+                + "# created by grid3d.Grid3d.save_config\n")
+            self.config.write(config_file)
+        print("configuration saved to: " + filename)
 
 # END: grid3d.py

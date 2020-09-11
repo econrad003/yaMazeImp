@@ -12,6 +12,8 @@ by Eric Conrad.
 * 3.2 **Other algorithms**
 * 4 **Grids and cells**
 * 5 **Layouts**
+* 5.1 **Graphical layouts**
+* 5.2 **Inform 7 code**
 * **References**
 
 ## 1 Description
@@ -30,6 +32,18 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 ### 2.1 Recent changes
 
 The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
+
+#### 10 September 2020
+
+**Inform 7 code** -- The first steps in generating Inform 7 code from a maze on a 3-dimensional grid are complete.  This is done in two steps.  First, the maze is "saved" as an editable INI configuration file which contains grid and maze information.  Then the configuration file is used to generate Inform 7 statements.  Section 5.2 of the *README.md* file has more information.
+
+At the moment the implementations in *grid3d.py* (to generate the INI file) and *inform7.py* (to generate the Inform 7 code) are both crude and preliminary, but they should at least be functional.
+
+**The Floyd-Warshall algorithm** -- The Floyd-Warshall algorithm (known by a number of names, including, more simply, *Floyd's algorithm*) is an algorithm for finding _all_ minimum weight paths in a directed graph, or, in our case, in a directed maze.  (At the moment, we don't have directed maze generation algorithms, though several implemented algorithms, including *Binary Tree* (*au* Jamis Buck), *Sidewinder*, *Aldous-Broder* and *Recursive Backtracker* (DFS) can easily be adapted for that purpose, or so I hope.)  It produces a state matrix with running time that is cubic in the number of vertices.  It is implemented in *floyds.py* and there is a simple demonstration in *floyds\_demo.py*.
+
+It has a number of uses, including detecting negative weight cycles (in linear time), finding minimum weight paths (in linear time), and checking reachability (in linear time), and determining whether one given vertex is reachable from another given vertex (in constant time).
+
+*N.B.* The adaptations of the four above-mentioned maze generation algorithms will (I hope!) be included in the next update.  The demonstration program *floyds\_demo.py* will probably be extended to include one or more of these algorithm implementations.
 
 #### 4 September 2020
 
@@ -57,6 +71,7 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
 * *binary\_tree2.py* - implementation of a binary tree algorithm that works most of the time for generating perfect mazes on arbitrary grids.  When it fails, the result is a binary spanning forest. When used on rectangular grids, the result is typically a binary spanning tree which cannot be produced by Jamis Buck's binary tree algorithm.
 * *boruvkas.py* - Borůvka's algorithm [8] (and see also [7]) is an algorithm to create minimum-weight spanning trees from connected edge-weighted graphs, provided the weight function is injective.  (If the weight function is not one-to-one, the result is a connected spanning subgraph which could contain circuits. \[*N.B.*: This is either a bug or a feature of the algorithm, depending on one's point of view.\])  Python program *boruvkas.py* is an implementation of Borůvka's algorithm for creating mazes. To insure that weights are unique, the default weight function is a random one-to-one map from the grid edges into range \[1,*e*\], where *e* is the number of grid edges.  As with Kruskal's algorithm, edge costs need to be known a priori, so the algorithm does not create weave mazes in a natural way, but like Kruskal's algorithm, the algorithm can be used to extend forests to spanning trees, and thus it is well-suited to mazes with prewoven crossings.
 * *binary\_tree\_polar.py* - an adaptation of the simple binary tree algorithm from Buck (2015) for theta (polar) mazes.
+* *complete\_maze.py* - this program, intended primarily for testing purposes, generates a complete maze on a grid, *i.e.* a maze in which every grid connection is linked.  In graph-theoretic terms, viewing the grid as a given graph and a maze as isomorphic to a subgraph of the grid, then this generates a maze which is isomorphic to the grid.
 * *edgewise\_growing_tree.py* - a family of algorithms for creating spanning trees (perfect mazes) on edge-weighted connected graphs (grids) that are similar in form to Prim's algorithm.
 * *hunt\_and\_kill.py* - an implementation of the Hunt and Kill algorithm described in Chapter 5 of Buck (2015).
 * *ellers.py* - an implementation of Eller's algorithm as described in Chapter 12 of the Jamis Buck book [1].  The algorithm is suitable as implemented for rectangular grids using "north" and "east" row and column grid connections.  In *polar_ellers.py*, there is an adaptation of the state matrix that uses the "inward" and "ccw" grid connections -- this variant make the Eller's algorithm implementation work with polar maze.
@@ -79,6 +94,7 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
   * sparsify - removal by clipping.
   * straightener - removal by carving a passage straight thru the dead end.
   * twister - removal by carving a passage which turns randomly (right or left) at the dead end. Twister can be configured to be restrict turns in a single direction. It can also be specially configured to arrange turnings in grids which don't support normal south/east/north/west directions.
+* *floyds.py* - the Floyd-Warshall algorithm for finding *all* minimum weight paths in a directed graph (or maze).  This algorithm has a running time that is cubic in the number of vertices, but produces a state matrix which can be used to detecting negative weight cycles (in linear time), to find minimum weight paths (in linear time), to check reachability (in linear time), and to determine whether one given vertex is reachable from another given vertex (in constant time).
 
 The demonstration script *konigsberg_demo.py* produces a maze based on the Königsberg bridges problem (Leonhard Euler, 1736).  It uses the recursive backtracker algorithm followed by one pass of simple braiding to insure that bridges are passable. Cell removal and cell coloring are governed by a template file *input/königsberg.txt* and sample output is in *demos/königsberg.png*.  For background, see references [2] through [5].
 
@@ -103,9 +119,53 @@ The function of the various cell programs should be mostly self-explanatory.  Mu
 
 ### 5 Layouts
 
+#### 5.1 Graphical layouts
+
 Several types of layouts are supported.  ASCII and unicode layouts are supported on rectangular grids and on some grids derived from rectangular grids (for example, cylinder grids).  All grids support GraphViz/dot layout, though the results usually leave a lot to be desired.
 
 Most derived grids support plot layouts using MatPlotLib, though in most cases, support will require some direct use of MatPlotLib methods.  See the scripts for examples.
+
+##### GRAPHVIZ
+
+* *layout\_graphviz.py* - a simple layout using *graphviz* for mazes on arbitrary grids
+
+##### MATPLOTLIB
+
+These typically require a substantial amount of tweaking.
+
+* *layout\_plot\_multilevel.py* - a face-coloring layout using *matplotlib* for multilevel rectangular and weave grids
+* *layout\_plot\_color.py* - a face-coloring layout using *matplotlib* for rectangular and weave grids
+* *layout\_plot.py* - a simple layout using *matplotlib* for rectangular and weave grids
+* *layout\_plot3d.py* - a face-coloring layout using *matplotlib* for 3-dimensional oblong grids
+* *layout\_plot\_polar.py* - a face_coloring layout using *matplotlib* for theta (*i.e.* polar) grids
+* *layout\_plot\_polygon.py* - a face-coloring layout using *matplotlib* for grids composed of polygons (such as upsilon, delta, and sigma grids)
+
+#### 5.2 Inform 7 code generation
+
+Inform 7 is a declarative language used primarily to produce interactive fiction (aka text adventures).  A classic example of interactive fiction is the game *Cave* (aka *Adventure*) from the early 1980s.  Modern versions of *Cave* can be found on the Interactive Fiction Archive at [https://ifarchive.org](https://ifarchive.org) under the names *Adventure* and *Colossal Cave*. *Cave* also inspired a commercial game called *Zork*.  Information about Inform 7 can be found on the Inform 7 web site at [http://inform7.com/](http://inform7.com/).
+
+Inform 7 code can be generated in two or three steps from a supported grid to represent a maze in Inform.  Supported grids are 3-D grids (defined in *grid3d.py) and their subclasses.  (Rectangular grids and weave grids may be backfitted with support sometime in the future.) The required steps are:
+
+1. Generate an INI configuration file to represent the maze.  (The maze can be reconstructed using the INI file, so this is a SAVE/LOAD representation of the maze.)
+2. (Optional.) Edit the configuration file to provide additional information.
+3. Use the INI file to generate Inform 7 code using the *Inform7* class in *inform7.py*.
+
+For help generating the INI file or with generating the maze from the INI file, see the examples in *inform7\_demo.py*.
+
+The generator handles both one-way and two-way links.  Typical generated code looks something like this:
+
+```
+        [definitions needed for one-way links]
+    The verb to be eastward from means the reversed mapping east relation.
+
+    Cell1 is a room.  The description is "There are exits east and northeast.".
+        [defining a one-way link]
+    Cell2 is a room.  It is a room eastward from Cell1.
+      The description is "There is an exit north.".
+        [defining two two-way links]
+    Cell3 is a room.  It is northeast from Cell1.  It is north from Cell2.
+      The description is "There are exits south and southwest."
+```
 
 ## References
 
