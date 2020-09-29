@@ -33,6 +33,14 @@ The scripts *entab.py* and *detab.py* are respectively a script to replace space
 
 The list of older changes, going back to 14 July 2020, has been moved to file *CHANGELOG.md*.  A short list of recent changes will continue to appear here before being archived in *CHANGELOG.md*.
 
+#### 29 September 2020
+
+**Directed mazes** -- Four directed maze generation algorithms have been implemented.  These are binary tree (first version), sidewinder, recursive backtracker, and Aldous/Broder (both first entrance and last exit).  A layout new program using *matplotlib* supports directed rectangular mazes.  See the demonstration script *directed\_maze\_demo.py* for some examples and some details.
+
+The python implementations of the directed maze generation algorithms are described briefly at the end of Section 3.1 below.  They are: *di\_aldous\_broder.py*, *di\_binary\_tree.py*, *di\_recursive\_backtracker.py*, and *di\_sidewinder.py*.
+
+This closes issue #12 (Directed mazes).
+
 #### 10 September 2020
 
 **Inform 7 code** -- The first steps in generating Inform 7 code from a maze on a 3-dimensional grid are complete.  This is done in two steps.  First, the maze is "saved" as an editable INI configuration file which contains grid and maze information.  Then the configuration file is used to generate Inform 7 statements.  Section 5.2 of the *README.md* file has more information.
@@ -44,21 +52,6 @@ At the moment the implementations in *grid3d.py* (to generate the INI file) and 
 It has a number of uses, including detecting negative weight cycles (in linear time), finding minimum weight paths (in linear time), and checking reachability (in linear time), and determining whether one given vertex is reachable from another given vertex (in constant time).
 
 *N.B.* The adaptations of the four above-mentioned maze generation algorithms will (I hope!) be included in the next update.  The demonstration program *floyds\_demo.py* will probably be extended to include one or more of these algorithm implementations.
-
-#### 4 September 2020
-
-**Complete maze** -- mainly for testing purposes -- this carves a complete maze on a grid, that is a maze with an arc for every grid connection.
-
-**High card wins algorithm** -- A generalization of the Binary Tree algorithm (Buck [1], Chapter 1) and the Ternary (aka Trinary) Tree algorithm (Buck [1], Chapter 12).  This is
-implemented in *high\_card\_wins.py*.  The implementation is similar in flavour to the Kruskal's algorithm implementation in *kruskals.py* in that it uses a state matrix (closing issue #9).  The demonstration script *high\_card\_demo.py* contains two demonstrations of the algorithm, the first essentially random, and the other a binary tree instantiation.
-
-**3-dimensional oblong grid** -- A simple rectangular 3-D grid or, more precisely, rectangular parallelopiped lattice.  Cell: *cell3d.py*; grid: *grid3d.py*, simple matplotlib layout: *layout\_plot3d.py*, demo using ternary tree algorithm: *grid3d\_demo.py*.
-
-#### 29 August 2020
-
-**Prim's algorithm and multilevel mazes** -- This change turned out to be easy.  Since Prim's  algorithm already works naturally with weave mazes, no teaking was needed for the Prims.State class. The only thing that was needed was to incorporate the algorithm into a demonstration script.  My choice here was *prims_demo.py*.  I incorporated *argparse* into the script to support command line arguments and added machinery to support multilevel weave mazes.  (I also cleaned up some of the documentation in the script.)
-
-Note: This is stage two of the enhancement issue #5. Still needed: growing tree algorithms applied to multilevel mazes. 
 
 ## 3 Algorithms
 
@@ -86,6 +79,12 @@ In the descriptions, the terms spanning tree and perfect maze are used interchan
 * *vertexwise\_growing\_tree.py* - a family of algorithms for creating spanning trees (perfect mazes) on vertex-weighted connected graphs (grids) that are superficially similar to Prim's algorithm.  These are all built on an algorithm that, for lack of a better name, I call vertex Prim.  These algorithms are similar to the algorithms "Simple Prim" and "True Prim", and two of the growing tree algorithms that were implemented in Chapter 11 of [1].
 * *tree\_search.py* -  included are alternative spanning tree search algorithms using a queue (breadth-first search) or a priority-queue (best-first search).  These complement the stack-based depth-first search algorithm used in *recursive\_backtracker.py*.
 * *wilson.py* - Wilson's algorithm, a theoretically unbiased spanning tree algorithm that uses a loop-erased random walk of the grid.  In addition, the program includes a hybrid Aldous/Broder/Wilson algorithm that starts the random walk using the first-entrance algorithm of Aldous and Broder and finishes using the loop-erased random walk due to Wilson.  Wilson's algorithm tends to start slowly and end quickly.  The hybrid algorithm tends to start and end quickly, slowing down as it approaches the middle using Aldous/Broder, then speeding up after Wilson's algorithm takes control.  I don't know whether the hybrid algorithm is biased.
+
+* **Directed algorithms** - directed versions of some of the algorithms have also been implemented.  These produce one-way links instead of two-way links:
+    * *di\_aldous\_broder.py* - a directed version of the Aldous/Broder algorithm.  Both first entrance and last exit are supported.  This implementation builds the unvisited set from the undirected component containing the start cell.  It can thus be used on disconnected grids, provided grid connections are two-way.
+    * *di\_binary\_tree.py* - a directed version of the first binary tree algorithm.
+    * *di\_recursive\_backtracker.py* - a directed version of the recursive backtracker (aka: depth-first search or DFS) algorithm.
+    * *di\_sidewinder.py* - a directed version of the sidewinder algorithm.
 
 ### 3.2 Other Algorithms
 
@@ -135,12 +134,13 @@ These typically require a substantial amount of tweaking.
 
 * *layout\_plot\_multilevel.py* - a face-coloring layout using *matplotlib* for multilevel rectangular and weave grids
 * *layout\_plot\_color.py* - a face-coloring layout using *matplotlib* for rectangular and weave grids
+* *layout\_plot\_digraph.py* - a face-coloring layout for directed mazes using *matplotlib* for rectangular grids
 * *layout\_plot.py* - a simple layout using *matplotlib* for rectangular and weave grids
 * *layout\_plot3d.py* - a face-coloring layout using *matplotlib* for 3-dimensional oblong grids
 * *layout\_plot\_polar.py* - a face_coloring layout using *matplotlib* for theta (*i.e.* polar) grids
 * *layout\_plot\_polygon.py* - a face-coloring layout using *matplotlib* for grids composed of polygons (such as upsilon, delta, and sigma grids)
 
-#### 5.2 Inform 7 code generation
+#### 5.2 Inform 7 code generation (EXPERIMENTAL)
 
 Inform 7 is a declarative language used primarily to produce interactive fiction (aka text adventures).  A classic example of interactive fiction is the game *Cave* (aka *Adventure*) from the early 1980s.  Modern versions of *Cave* can be found on the Interactive Fiction Archive at [https://ifarchive.org](https://ifarchive.org) under the names *Adventure* and *Colossal Cave*. *Cave* also inspired a commercial game called *Zork*.  Information about Inform 7 can be found on the Inform 7 web site at [http://inform7.com/](http://inform7.com/).
 

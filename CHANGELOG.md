@@ -2,6 +2,21 @@
 
 Recent changes are found in file *README.md*.  This file contains a list of older changes going back to 14 July 2020.  This list is in reverse chronological order.
 
+#### 4 September 2020
+
+**Complete maze** -- mainly for testing purposes -- this carves a complete maze on a grid, that is a maze with an arc for every grid connection.
+
+**High card wins algorithm** -- A generalization of the Binary Tree algorithm (Buck [1], Chapter 1) and the Ternary (aka Trinary) Tree algorithm (Buck [1], Chapter 12).  This is
+implemented in *high\_card\_wins.py*.  The implementation is similar in flavour to the Kruskal's algorithm implementation in *kruskals.py* in that it uses a state matrix (closing issue #9).  The demonstration script *high\_card\_demo.py* contains two demonstrations of the algorithm, the first essentially random, and the other a binary tree instantiation.
+
+**3-dimensional oblong grid** -- A simple rectangular 3-D grid or, more precisely, rectangular parallelopiped lattice.  Cell: *cell3d.py*; grid: *grid3d.py*, simple matplotlib layout: *layout\_plot3d.py*, demo using ternary tree algorithm: *grid3d\_demo.py*.
+
+#### 29 August 2020
+
+**Prim's algorithm and multilevel mazes** -- This change turned out to be easy.  Since Prim's  algorithm already works naturally with weave mazes, no teaking was needed for the Prims.State class. The only thing that was needed was to incorporate the algorithm into a demonstration script.  My choice here was *prims_demo.py*.  I incorporated *argparse* into the script to support command line arguments and added machinery to support multilevel weave mazes.  (I also cleaned up some of the documentation in the script.)
+
+Note: This is stage two of the enhancement issue #5. Still needed: growing tree algorithms applied to multilevel mazes. 
+
 #### 28 August 2020
 
 **Eller's algorithm** -- My implementation of Eller's algorithm, in *ellers.py*, uses a state matrix in the manner of those used in the implementation of Kruskal's algorithm, and is suitable for use with rectangular grids.  A modified state matrix for polar grids is implemented in *polar_ellers.py*.  Demonstration scripts *ellers_demo.py* and *polar_ellers.py* can be used for testing the implementations and for producing rectangular and polar mazes with Eller's algorithm.  
