@@ -2,6 +2,17 @@
 "Yet another maze implementation"
 by Eric Conrad.
 
+> [!NOTE]
+> The programs in this repository (yaMazeImp) are frozen.
+
+These programs in the yaMazeImp repository were written several years ago in Python 2 -- I no longer have a way of supporting these programs... (Python has undergone a lot of change since these were written.)
+
+I am currently working on coding maze algorithms in Python 3 (a rewrite, not an update).
+
+For the current work, visit my newer repository here on github: https://github.com/econrad003/maze4c
+
+
+
 ## Overview
 
 * 1 **Description**
